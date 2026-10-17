@@ -926,16 +926,64 @@
     </div>
   </div>
 
-  <!-- Live Creative Mode FX Toggles -->
+  <!-- Live Creative Mode FX & InShot Film Pack Toggles -->
   <div class="neo-raised rounded-2xl p-3 border border-white/80 space-y-2">
     <div class="flex items-center justify-between text-xs font-bold text-on-surface">
       <span class="flex items-center gap-1.5">
-        <span class="material-symbols-outlined text-[16px] text-primary">tune</span>
-        Real-Time GPU Shaders
+        <span class="material-symbols-outlined text-[16px] text-primary">movie</span>
+        Real-Time GPU Shaders &amp; InShot Film Pack
       </span>
-      <span class="text-[10px] text-secondary font-mono">Hardware Blending</span>
+      <span id="videoShaderModeBadge" class="text-[10px] text-secondary font-mono">Hardware Blending</span>
     </div>
-    <div class="grid grid-cols-4 gap-2">
+
+    <!-- Category selector for video shaders -->
+    <div class="flex gap-1.5 overflow-x-auto no-scrollbar py-0.5">
+      <button onclick="VideoCanvas.filterShaderTab('film')" id="btnVidTab-film" class="px-2.5 py-0.5 rounded-full bg-primary text-white text-[10px] font-bold flex-shrink-0 flex items-center gap-1">
+        <span class="material-symbols-outlined text-[12px]">movie</span> Film Pack
+      </button>
+      <button onclick="VideoCanvas.filterShaderTab('retro')" id="btnVidTab-retro" class="px-2.5 py-0.5 rounded-full neo-raised-sm text-secondary hover:text-primary text-[10px] font-bold flex-shrink-0 flex items-center gap-1">
+        <span class="material-symbols-outlined text-[12px]">stream</span> Glitch &amp; Retro
+      </button>
+    </div>
+
+    <!-- Film Pack Shaders Grid -->
+    <div id="vidShaders-film" class="grid grid-cols-4 sm:grid-cols-8 gap-1.5">
+      <button id="fxToggleFilm01" onclick="VideoCanvas.toggleEffect('film01')" class="p-1.5 rounded-xl neo-raised-sm border border-white/80 flex flex-col items-center gap-0.5 text-[9px] font-bold text-secondary hover:text-primary active:scale-95 transition-all">
+        <span class="material-symbols-outlined text-[16px]">movie</span>
+        Film 01
+      </button>
+      <button id="fxToggleFilm02" onclick="VideoCanvas.toggleEffect('film02')" class="p-1.5 rounded-xl neo-raised-sm border border-white/80 flex flex-col items-center gap-0.5 text-[9px] font-bold text-secondary hover:text-primary active:scale-95 transition-all">
+        <span class="material-symbols-outlined text-[16px]">grain</span>
+        Dust FX
+      </button>
+      <button id="fxToggleFilm03" onclick="VideoCanvas.toggleEffect('film03')" class="p-1.5 rounded-xl neo-raised-sm border border-white/80 flex flex-col items-center gap-0.5 text-[9px] font-bold text-secondary hover:text-primary active:scale-95 transition-all">
+        <span class="material-symbols-outlined text-[16px]">camera_roll</span>
+        Super 8
+      </button>
+      <button id="fxToggleFilm04" onclick="VideoCanvas.toggleEffect('film04')" class="p-1.5 rounded-xl neo-raised-sm border border-white/80 flex flex-col items-center gap-0.5 text-[9px] font-bold text-secondary hover:text-primary active:scale-95 transition-all">
+        <span class="material-symbols-outlined text-[16px]">filter_frames</span>
+        Polaroid
+      </button>
+      <button id="fxToggleFilm05" onclick="VideoCanvas.toggleEffect('film05')" class="p-1.5 rounded-xl neo-raised-sm border border-white/80 flex flex-col items-center gap-0.5 text-[9px] font-bold text-secondary hover:text-primary active:scale-95 transition-all">
+        <span class="material-symbols-outlined text-[16px]">flare</span>
+        Film Burn
+      </button>
+      <button id="fxToggleFilm06" onclick="VideoCanvas.toggleEffect('film06')" class="p-1.5 rounded-xl neo-raised-sm border border-white/80 flex flex-col items-center gap-0.5 text-[9px] font-bold text-secondary hover:text-primary active:scale-95 transition-all">
+        <span class="material-symbols-outlined text-[16px]">view_carousel</span>
+        35mm Roll
+      </button>
+      <button id="fxToggleFilm07" onclick="VideoCanvas.toggleEffect('film07')" class="p-1.5 rounded-xl neo-raised-sm border border-white/80 flex flex-col items-center gap-0.5 text-[9px] font-bold text-secondary hover:text-primary active:scale-95 transition-all">
+        <span class="material-symbols-outlined text-[16px]">theaters</span>
+        Cinema 2.35
+      </button>
+      <button id="fxToggleFilm09" onclick="VideoCanvas.toggleEffect('film09')" class="p-1.5 rounded-xl neo-raised-sm border border-white/80 flex flex-col items-center gap-0.5 text-[9px] font-bold text-secondary hover:text-primary active:scale-95 transition-all">
+        <span class="material-symbols-outlined text-[16px]">blur_on</span>
+        Halation 800
+      </button>
+    </div>
+
+    <!-- Retro & Glitch Shaders Grid -->
+    <div id="vidShaders-retro" class="grid grid-cols-4 gap-2 hidden">
       <button id="fxToggleGlitch" onclick="VideoCanvas.toggleEffect('glitch')" class="p-2 rounded-xl neo-pill-active border border-white/80 flex flex-col items-center gap-1 text-[10px] font-bold text-primary active:scale-95 transition-all">
         <span class="material-symbols-outlined text-[18px]">stream</span>
         Glitch Split
@@ -1644,9 +1692,11 @@
         <!-- Filter Category Filter Pills -->
         <div class="flex gap-2 overflow-x-auto no-scrollbar py-1" id="filterCategoryTabs">
           <button onclick="PhotoStudio.filterCategory('all')" class="px-2.5 py-1 rounded-full bg-cyan-400 text-black text-[11px] font-bold flex-shrink-0">All Presets</button>
+          <button onclick="PhotoStudio.filterCategory('insta')" class="px-2.5 py-1 rounded-full bg-[#141b2c] hover:bg-white/10 text-slate-300 text-[11px] font-bold flex-shrink-0">Instagram</button>
           <button onclick="PhotoStudio.filterCategory('cinematic')" class="px-2.5 py-1 rounded-full bg-[#141b2c] hover:bg-white/10 text-slate-300 text-[11px] font-bold flex-shrink-0">Cinematic</button>
           <button onclick="PhotoStudio.filterCategory('portrait')" class="px-2.5 py-1 rounded-full bg-[#141b2c] hover:bg-white/10 text-slate-300 text-[11px] font-bold flex-shrink-0">Portrait</button>
           <button onclick="PhotoStudio.filterCategory('vintage')" class="px-2.5 py-1 rounded-full bg-[#141b2c] hover:bg-white/10 text-slate-300 text-[11px] font-bold flex-shrink-0">Vintage Film</button>
+          <button onclick="PhotoStudio.filterCategory('artistic')" class="px-2.5 py-1 rounded-full bg-[#141b2c] hover:bg-white/10 text-slate-300 text-[11px] font-bold flex-shrink-0">Artistic &amp; Pop</button>
           <button onclick="PhotoStudio.filterCategory('bw')" class="px-2.5 py-1 rounded-full bg-[#141b2c] hover:bg-white/10 text-slate-300 text-[11px] font-bold flex-shrink-0">B&amp;W Noir</button>
           <button onclick="PhotoStudio.filterCategory('warm')" class="px-2.5 py-1 rounded-full bg-[#141b2c] hover:bg-white/10 text-slate-300 text-[11px] font-bold flex-shrink-0">Warm Glow</button>
           <button onclick="PhotoStudio.filterCategory('cool')" class="px-2.5 py-1 rounded-full bg-[#141b2c] hover:bg-white/10 text-slate-300 text-[11px] font-bold flex-shrink-0">Cyber Cool</button>
@@ -1659,41 +1709,219 @@
       </div>
 
       <!-- ========================================================== -->
-      <!-- TAB 6: EFFECTS (BLUR, GLITCH, GRAIN, LIGHT LEAK)           -->
+      <!-- TAB 6: INSHOT FILM EFFECTS & CREATIVE VFX STUDIO           -->
       <!-- ========================================================== -->
       <div id="panel-effects" class="tool-panel hidden space-y-3">
+        <!-- Header with Active Badge & Clear Button -->
         <div class="flex items-center justify-between">
-          <div class="flex items-center gap-1.5 text-xs font-bold text-cyan-400">
-            <span class="material-symbols-outlined text-[18px]">blur_on</span>
-            <span>Creative VFX, Light Leaks &amp; Shaders</span>
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-[18px] text-cyan-400">movie</span>
+            <span class="text-xs font-bold text-cyan-400">InShot Film Effects &amp; VFX Studio</span>
+            <span id="activeEffectBadge" class="hidden px-2 py-0.5 rounded-full bg-cyan-400/20 text-cyan-300 font-mono text-[9px] font-bold border border-cyan-400/30"></span>
           </div>
-          <button onclick="PhotoStudio.clearEffects()" class="text-[10px] text-cyan-400 hover:underline font-mono">Clear FX</button>
+          <button onclick="PhotoStudio.clearEffects()" class="px-2.5 py-1 rounded-xl bg-[#141b2c] hover:bg-white/10 text-[10px] text-cyan-400 font-mono font-bold border border-white/10">Clear FX</button>
         </div>
 
-        <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
-          <button onclick="PhotoStudio.applyEffect('glitch')" class="p-2.5 rounded-2xl bg-[#121927] hover:bg-[#1b253b] border border-white/10 flex flex-col items-center gap-1 text-center active:scale-95">
-            <span class="material-symbols-outlined text-[20px] text-pink-400">stream</span>
+        <!-- InShot-Style Category Navigation Tabs -->
+        <div class="flex gap-1.5 overflow-x-auto no-scrollbar py-1" id="effectCategoryTabs">
+          <button onclick="PhotoStudio.filterEffectCategory('film')" id="fxCatTab-film" data-cat="film" class="px-3 py-1 rounded-full bg-cyan-400 text-black text-[11px] font-bold flex-shrink-0 shadow-sm flex items-center gap-1">
+            <span class="material-symbols-outlined text-[14px]">movie</span> Film Effects
+            <span class="px-1.5 py-0.2 rounded-full bg-black/20 text-[9px] font-mono">12</span>
+          </button>
+          <button onclick="PhotoStudio.filterEffectCategory('glitch')" id="fxCatTab-glitch" data-cat="glitch" class="px-3 py-1 rounded-full bg-[#141b2c] hover:bg-white/10 text-slate-300 text-[11px] font-bold flex-shrink-0 flex items-center gap-1">
+            <span class="material-symbols-outlined text-[14px]">stream</span> Glitch &amp; Cyber
+          </button>
+          <button onclick="PhotoStudio.filterEffectCategory('light')" id="fxCatTab-light" data-cat="light" class="px-3 py-1 rounded-full bg-[#141b2c] hover:bg-white/10 text-slate-300 text-[11px] font-bold flex-shrink-0 flex items-center gap-1">
+            <span class="material-symbols-outlined text-[14px]">flare</span> Light &amp; Flares
+          </button>
+          <button onclick="PhotoStudio.filterEffectCategory('retro')" id="fxCatTab-retro" data-cat="retro" class="px-3 py-1 rounded-full bg-[#141b2c] hover:bg-white/10 text-slate-300 text-[11px] font-bold flex-shrink-0 flex items-center gap-1">
+            <span class="material-symbols-outlined text-[14px]">videocam</span> Retro &amp; Vintage
+          </button>
+          <button onclick="PhotoStudio.filterEffectCategory('blur')" id="fxCatTab-blur" data-cat="blur" class="px-3 py-1 rounded-full bg-[#141b2c] hover:bg-white/10 text-slate-300 text-[11px] font-bold flex-shrink-0 flex items-center gap-1">
+            <span class="material-symbols-outlined text-[14px]">lens_blur</span> Blur &amp; Motion
+          </button>
+          <button onclick="PhotoStudio.filterEffectCategory('all')" id="fxCatTab-all" data-cat="all" class="px-3 py-1 rounded-full bg-[#141b2c] hover:bg-white/10 text-slate-300 text-[11px] font-bold flex-shrink-0">
+            All Effects
+          </button>
+        </div>
+
+        <!-- Live Effect Intensity Slider -->
+        <div id="effectIntensityBar" class="flex items-center gap-3 px-3 py-2 rounded-2xl bg-[#121927] border border-white/10">
+          <span class="text-[11px] font-bold text-slate-300 flex items-center gap-1">
+            <span class="material-symbols-outlined text-[14px] text-cyan-400">tune</span> Intensity:
+          </span>
+          <input type="range" id="inputEffectIntensity" min="10" max="100" value="85" class="flex-1 accent-cyan-400 h-1.5 bg-slate-700 rounded-lg cursor-pointer" oninput="PhotoStudio.setEffectIntensity(this.value)"/>
+          <span id="labelEffectIntensity" class="text-xs font-mono font-bold text-cyan-400 min-w-[36px] text-right">85%</span>
+        </div>
+
+        <!-- VFX Effect Cards Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 max-h-[290px] overflow-y-auto no-scrollbar p-0.5" id="vfxEffectsGrid">
+          <!-- FILM CATEGORY: ALL 12 FILM EFFECTS -->
+          <button onclick="PhotoStudio.applyEffect('film01')" data-effect="film01" data-category="film" class="vfx-effect-card p-2.5 rounded-2xl bg-[#121927] hover:bg-[#1b253b] border border-white/10 flex flex-col items-center gap-1 text-center active:scale-95 transition-all group">
+            <span class="material-symbols-outlined text-[22px] text-amber-400 group-hover:scale-110 transition-transform">movie</span>
+            <span class="font-bold text-[11px] text-white">Film 01</span>
+            <span class="text-[9px] text-slate-400 font-mono">35mm Warm</span>
+          </button>
+
+          <button onclick="PhotoStudio.applyEffect('film02')" data-effect="film02" data-category="film" class="vfx-effect-card p-2.5 rounded-2xl bg-[#121927] hover:bg-[#1b253b] border border-white/10 flex flex-col items-center gap-1 text-center active:scale-95 transition-all group">
+            <span class="material-symbols-outlined text-[22px] text-amber-300 group-hover:scale-110 transition-transform">grain</span>
+            <span class="font-bold text-[11px] text-white">Film 02</span>
+            <span class="text-[9px] text-slate-400 font-mono">Dust &amp; Scratches</span>
+          </button>
+
+          <button onclick="PhotoStudio.applyEffect('film03')" data-effect="film03" data-category="film" class="vfx-effect-card p-2.5 rounded-2xl bg-[#121927] hover:bg-[#1b253b] border border-white/10 flex flex-col items-center gap-1 text-center active:scale-95 transition-all group">
+            <span class="material-symbols-outlined text-[22px] text-yellow-400 group-hover:scale-110 transition-transform">camera_roll</span>
+            <span class="font-bold text-[11px] text-white">Film 03</span>
+            <span class="text-[9px] text-slate-400 font-mono">Super 8mm</span>
+          </button>
+
+          <button onclick="PhotoStudio.applyEffect('film04')" data-effect="film04" data-category="film" class="vfx-effect-card relative p-2.5 rounded-2xl bg-[#121927] hover:bg-[#1b253b] border border-white/10 flex flex-col items-center gap-1 text-center active:scale-95 transition-all group">
+            <span class="absolute -top-1.5 -right-1.5 px-1.5 py-0.2 rounded-full bg-gradient-to-r from-pink-500 to-amber-500 text-black text-[8px] font-extrabold uppercase shadow-sm">Hero</span>
+            <span class="material-symbols-outlined text-[22px] text-cyan-400 group-hover:scale-110 transition-transform">filter_frames</span>
+            <span class="font-bold text-[11px] text-white">Film 04</span>
+            <span class="text-[9px] text-slate-400 font-mono">Polaroid Frame</span>
+          </button>
+
+          <button onclick="PhotoStudio.applyEffect('film05')" data-effect="film05" data-category="film" class="vfx-effect-card p-2.5 rounded-2xl bg-[#121927] hover:bg-[#1b253b] border border-white/10 flex flex-col items-center gap-1 text-center active:scale-95 transition-all group">
+            <span class="material-symbols-outlined text-[22px] text-orange-400 group-hover:scale-110 transition-transform">flare</span>
+            <span class="font-bold text-[11px] text-white">Film 05</span>
+            <span class="text-[9px] text-slate-400 font-mono">Light Leak Burn</span>
+          </button>
+
+          <button onclick="PhotoStudio.applyEffect('film06')" data-effect="film06" data-category="film" class="vfx-effect-card p-2.5 rounded-2xl bg-[#121927] hover:bg-[#1b253b] border border-white/10 flex flex-col items-center gap-1 text-center active:scale-95 transition-all group">
+            <span class="material-symbols-outlined text-[22px] text-amber-500 group-hover:scale-110 transition-transform">view_carousel</span>
+            <span class="font-bold text-[11px] text-white">Film 06</span>
+            <span class="text-[9px] text-slate-400 font-mono">35mm Roll Film</span>
+          </button>
+
+          <button onclick="PhotoStudio.applyEffect('film07')" data-effect="film07" data-category="film" class="vfx-effect-card p-2.5 rounded-2xl bg-[#121927] hover:bg-[#1b253b] border border-white/10 flex flex-col items-center gap-1 text-center active:scale-95 transition-all group">
+            <span class="material-symbols-outlined text-[22px] text-sky-400 group-hover:scale-110 transition-transform">theaters</span>
+            <span class="font-bold text-[11px] text-white">Film 07</span>
+            <span class="text-[9px] text-slate-400 font-mono">Cinema 2.35:1</span>
+          </button>
+
+          <button onclick="PhotoStudio.applyEffect('film08')" data-effect="film08" data-category="film" class="vfx-effect-card p-2.5 rounded-2xl bg-[#121927] hover:bg-[#1b253b] border border-white/10 flex flex-col items-center gap-1 text-center active:scale-95 transition-all group">
+            <span class="material-symbols-outlined text-[22px] text-emerald-400 group-hover:scale-110 transition-transform">invert_colors</span>
+            <span class="font-bold text-[11px] text-white">Film 08</span>
+            <span class="text-[9px] text-slate-400 font-mono">Color Negative</span>
+          </button>
+
+          <button onclick="PhotoStudio.applyEffect('film09')" data-effect="film09" data-category="film" class="vfx-effect-card p-2.5 rounded-2xl bg-[#121927] hover:bg-[#1b253b] border border-white/10 flex flex-col items-center gap-1 text-center active:scale-95 transition-all group">
+            <span class="material-symbols-outlined text-[22px] text-rose-500 group-hover:scale-110 transition-transform">blur_on</span>
+            <span class="font-bold text-[11px] text-white">Film 09</span>
+            <span class="text-[9px] text-slate-400 font-mono">Halation 800T</span>
+          </button>
+
+          <button onclick="PhotoStudio.applyEffect('film10')" data-effect="film10" data-category="film" class="vfx-effect-card p-2.5 rounded-2xl bg-[#121927] hover:bg-[#1b253b] border border-white/10 flex flex-col items-center gap-1 text-center active:scale-95 transition-all group">
+            <span class="material-symbols-outlined text-[22px] text-purple-400 group-hover:scale-110 transition-transform">auto_awesome</span>
+            <span class="font-bold text-[11px] text-white">Film 10</span>
+            <span class="text-[9px] text-slate-400 font-mono">Prism Diopter</span>
+          </button>
+
+          <button onclick="PhotoStudio.applyEffect('film11')" data-effect="film11" data-category="film" class="vfx-effect-card p-2.5 rounded-2xl bg-[#121927] hover:bg-[#1b253b] border border-white/10 flex flex-col items-center gap-1 text-center active:scale-95 transition-all group">
+            <span class="material-symbols-outlined text-[22px] text-amber-600 group-hover:scale-110 transition-transform">videocam</span>
+            <span class="font-bold text-[11px] text-white">Film 11</span>
+            <span class="text-[9px] text-slate-400 font-mono">8mm Projector</span>
+          </button>
+
+          <button onclick="PhotoStudio.applyEffect('film12')" data-effect="film12" data-category="film" class="vfx-effect-card p-2.5 rounded-2xl bg-[#121927] hover:bg-[#1b253b] border border-white/10 flex flex-col items-center gap-1 text-center active:scale-95 transition-all group">
+            <span class="material-symbols-outlined text-[22px] text-slate-300 group-hover:scale-110 transition-transform">texture</span>
+            <span class="font-bold text-[11px] text-white">Film 12</span>
+            <span class="text-[9px] text-slate-400 font-mono">Silver Grain</span>
+          </button>
+
+          <!-- GLITCH CATEGORY -->
+          <button onclick="PhotoStudio.applyEffect('glitch')" data-effect="glitch" data-category="glitch" class="vfx-effect-card hidden p-2.5 rounded-2xl bg-[#121927] hover:bg-[#1b253b] border border-white/10 flex flex-col items-center gap-1 text-center active:scale-95 transition-all group">
+            <span class="material-symbols-outlined text-[22px] text-pink-400 group-hover:scale-110 transition-transform">stream</span>
             <span class="font-bold text-[11px] text-white">RGB Glitch</span>
+            <span class="text-[9px] text-slate-400 font-mono">Slice Shift</span>
           </button>
-          <button onclick="PhotoStudio.applyEffect('lightLeak')" class="p-2.5 rounded-2xl bg-[#121927] hover:bg-[#1b253b] border border-white/10 flex flex-col items-center gap-1 text-center active:scale-95">
-            <span class="material-symbols-outlined text-[20px] text-amber-400">flare</span>
-            <span class="font-bold text-[11px] text-white">Light Leak</span>
+
+          <button onclick="PhotoStudio.applyEffect('crt')" data-effect="crt" data-category="glitch" class="vfx-effect-card hidden p-2.5 rounded-2xl bg-[#121927] hover:bg-[#1b253b] border border-white/10 flex flex-col items-center gap-1 text-center active:scale-95 transition-all group">
+            <span class="material-symbols-outlined text-[22px] text-cyan-400 group-hover:scale-110 transition-transform">tv</span>
+            <span class="font-bold text-[11px] text-white">CRT Scanlines</span>
+            <span class="text-[9px] text-slate-400 font-mono">Phosphor Tube</span>
           </button>
-          <button onclick="PhotoStudio.applyEffect('motionBlur')" class="p-2.5 rounded-2xl bg-[#121927] hover:bg-[#1b253b] border border-white/10 flex flex-col items-center gap-1 text-center active:scale-95">
-            <span class="material-symbols-outlined text-[20px] text-cyan-400">motion_photos_on</span>
-            <span class="font-bold text-[11px] text-white">Motion Blur</span>
-          </button>
-          <button onclick="PhotoStudio.applyEffect('lensGlow')" class="p-2.5 rounded-2xl bg-[#121927] hover:bg-[#1b253b] border border-white/10 flex flex-col items-center gap-1 text-center active:scale-95">
-            <span class="material-symbols-outlined text-[20px] text-purple-400">lens_blur</span>
-            <span class="font-bold text-[11px] text-white">Lens Glow</span>
-          </button>
-          <button onclick="PhotoStudio.applyEffect('grain')" class="p-2.5 rounded-2xl bg-[#121927] hover:bg-[#1b253b] border border-white/10 flex flex-col items-center gap-1 text-center active:scale-95">
-            <span class="material-symbols-outlined text-[20px] text-slate-300">grain</span>
-            <span class="font-bold text-[11px] text-white">Film Grain</span>
-          </button>
-          <button onclick="PhotoStudio.applyEffect('mosaic')" class="p-2.5 rounded-2xl bg-[#121927] hover:bg-[#1b253b] border border-white/10 flex flex-col items-center gap-1 text-center active:scale-95">
-            <span class="material-symbols-outlined text-[20px] text-emerald-400">grid_view</span>
+
+          <button onclick="PhotoStudio.applyEffect('mosaic')" data-effect="mosaic" data-category="glitch" class="vfx-effect-card hidden p-2.5 rounded-2xl bg-[#121927] hover:bg-[#1b253b] border border-white/10 flex flex-col items-center gap-1 text-center active:scale-95 transition-all group">
+            <span class="material-symbols-outlined text-[22px] text-emerald-400 group-hover:scale-110 transition-transform">grid_view</span>
             <span class="font-bold text-[11px] text-white">Pixelate</span>
+            <span class="text-[9px] text-slate-400 font-mono">8-Bit Mosaic</span>
+          </button>
+
+          <button onclick="PhotoStudio.applyEffect('datamosh')" data-effect="datamosh" data-category="glitch" class="vfx-effect-card hidden p-2.5 rounded-2xl bg-[#121927] hover:bg-[#1b253b] border border-white/10 flex flex-col items-center gap-1 text-center active:scale-95 transition-all group">
+            <span class="material-symbols-outlined text-[22px] text-red-400 group-hover:scale-110 transition-transform">broken_image</span>
+            <span class="font-bold text-[11px] text-white">Data Mosh</span>
+            <span class="text-[9px] text-slate-400 font-mono">Codec Smear</span>
+          </button>
+
+          <!-- LIGHT CATEGORY -->
+          <button onclick="PhotoStudio.applyEffect('lightLeak')" data-effect="lightLeak" data-category="light" class="vfx-effect-card hidden p-2.5 rounded-2xl bg-[#121927] hover:bg-[#1b253b] border border-white/10 flex flex-col items-center gap-1 text-center active:scale-95 transition-all group">
+            <span class="material-symbols-outlined text-[22px] text-amber-400 group-hover:scale-110 transition-transform">sunny</span>
+            <span class="font-bold text-[11px] text-white">Golden Leak</span>
+            <span class="text-[9px] text-slate-400 font-mono">Sunset Flare</span>
+          </button>
+
+          <button onclick="PhotoStudio.applyEffect('lensGlow')" data-effect="lensGlow" data-category="light" class="vfx-effect-card hidden p-2.5 rounded-2xl bg-[#121927] hover:bg-[#1b253b] border border-white/10 flex flex-col items-center gap-1 text-center active:scale-95 transition-all group">
+            <span class="material-symbols-outlined text-[22px] text-purple-400 group-hover:scale-110 transition-transform">lens_blur</span>
+            <span class="font-bold text-[11px] text-white">Lens Glow</span>
+            <span class="text-[9px] text-slate-400 font-mono">Optical Bloom</span>
+          </button>
+
+          <button onclick="PhotoStudio.applyEffect('rainbow')" data-effect="rainbow" data-category="light" class="vfx-effect-card hidden p-2.5 rounded-2xl bg-[#121927] hover:bg-[#1b253b] border border-white/10 flex flex-col items-center gap-1 text-center active:scale-95 transition-all group">
+            <span class="material-symbols-outlined text-[22px] text-pink-300 group-hover:scale-110 transition-transform">palette</span>
+            <span class="font-bold text-[11px] text-white">Rainbow Flare</span>
+            <span class="text-[9px] text-slate-400 font-mono">Prism Streak</span>
+          </button>
+
+          <button onclick="PhotoStudio.applyEffect('neonEdge')" data-effect="neonEdge" data-category="light" class="vfx-effect-card hidden p-2.5 rounded-2xl bg-[#121927] hover:bg-[#1b253b] border border-white/10 flex flex-col items-center gap-1 text-center active:scale-95 transition-all group">
+            <span class="material-symbols-outlined text-[22px] text-cyan-300 group-hover:scale-110 transition-transform">highlight</span>
+            <span class="font-bold text-[11px] text-white">Neon Edge</span>
+            <span class="text-[9px] text-slate-400 font-mono">Contour Glow</span>
+          </button>
+
+          <!-- RETRO CATEGORY -->
+          <button onclick="PhotoStudio.applyEffect('vhs')" data-effect="vhs" data-category="retro" class="vfx-effect-card hidden p-2.5 rounded-2xl bg-[#121927] hover:bg-[#1b253b] border border-white/10 flex flex-col items-center gap-1 text-center active:scale-95 transition-all group">
+            <span class="material-symbols-outlined text-[22px] text-emerald-400 group-hover:scale-110 transition-transform">videocam</span>
+            <span class="font-bold text-[11px] text-white">VHS 90s</span>
+            <span class="text-[9px] text-slate-400 font-mono">Camcorder OSD</span>
+          </button>
+
+          <button onclick="PhotoStudio.applyEffect('vintageSepia')" data-effect="vintageSepia" data-category="retro" class="vfx-effect-card hidden p-2.5 rounded-2xl bg-[#121927] hover:bg-[#1b253b] border border-white/10 flex flex-col items-center gap-1 text-center active:scale-95 transition-all group">
+            <span class="material-symbols-outlined text-[22px] text-amber-600 group-hover:scale-110 transition-transform">history</span>
+            <span class="font-bold text-[11px] text-white">Daguerreotype</span>
+            <span class="text-[9px] text-slate-400 font-mono">1890s Silver</span>
+          </button>
+
+          <button onclick="PhotoStudio.applyEffect('noir')" data-effect="noir" data-category="retro" class="vfx-effect-card hidden p-2.5 rounded-2xl bg-[#121927] hover:bg-[#1b253b] border border-white/10 flex flex-col items-center gap-1 text-center active:scale-95 transition-all group">
+            <span class="material-symbols-outlined text-[22px] text-slate-200 group-hover:scale-110 transition-transform">contrast</span>
+            <span class="font-bold text-[11px] text-white">Noir 1940</span>
+            <span class="text-[9px] text-slate-400 font-mono">Dramatic B&amp;W</span>
+          </button>
+
+          <button onclick="PhotoStudio.applyEffect('halftone')" data-effect="halftone" data-category="retro" class="vfx-effect-card hidden p-2.5 rounded-2xl bg-[#121927] hover:bg-[#1b253b] border border-white/10 flex flex-col items-center gap-1 text-center active:scale-95 transition-all group">
+            <span class="material-symbols-outlined text-[22px] text-yellow-300 group-hover:scale-110 transition-transform">scatter_plot</span>
+            <span class="font-bold text-[11px] text-white">Pop Halftone</span>
+            <span class="text-[9px] text-slate-400 font-mono">Comic Dots</span>
+          </button>
+
+          <!-- BLUR & MOTION CATEGORY -->
+          <button onclick="PhotoStudio.applyEffect('motionBlur')" data-effect="motionBlur" data-category="blur" class="vfx-effect-card hidden p-2.5 rounded-2xl bg-[#121927] hover:bg-[#1b253b] border border-white/10 flex flex-col items-center gap-1 text-center active:scale-95 transition-all group">
+            <span class="material-symbols-outlined text-[22px] text-cyan-400 group-hover:scale-110 transition-transform">motion_photos_on</span>
+            <span class="font-bold text-[11px] text-white">Motion Blur</span>
+            <span class="text-[9px] text-slate-400 font-mono">Camera Drift</span>
+          </button>
+
+          <button onclick="PhotoStudio.applyEffect('radialBlur')" data-effect="radialBlur" data-category="blur" class="vfx-effect-card hidden p-2.5 rounded-2xl bg-[#121927] hover:bg-[#1b253b] border border-white/10 flex flex-col items-center gap-1 text-center active:scale-95 transition-all group">
+            <span class="material-symbols-outlined text-[22px] text-indigo-400 group-hover:scale-110 transition-transform">cyclone</span>
+            <span class="font-bold text-[11px] text-white">Zoom Burst</span>
+            <span class="text-[9px] text-slate-400 font-mono">Radial Speed</span>
+          </button>
+
+          <button onclick="PhotoStudio.applyEffect('tiltShift')" data-effect="tiltShift" data-category="blur" class="vfx-effect-card hidden p-2.5 rounded-2xl bg-[#121927] hover:bg-[#1b253b] border border-white/10 flex flex-col items-center gap-1 text-center active:scale-95 transition-all group">
+            <span class="material-symbols-outlined text-[22px] text-violet-400 group-hover:scale-110 transition-transform">linear_scale</span>
+            <span class="font-bold text-[11px] text-white">Tilt-Shift</span>
+            <span class="text-[9px] text-slate-400 font-mono">Miniature Focus</span>
           </button>
         </div>
       </div>
@@ -1787,6 +2015,9 @@
           </button>
           <button onclick="PhotoStudio.setDrawTool('mosaicCensor')" id="btnDrawCensor" class="px-3 py-1.5 rounded-xl bg-[#141b2c] text-rose-400 hover:text-white text-xs font-bold flex items-center gap-1" title="Blur faces or private info">
             <span class="material-symbols-outlined text-[16px]">blur_circular</span> Privacy Censor
+          </button>
+          <button onclick="PhotoStudio.runAiObjectRemoval()" id="btnDrawInpaint" class="px-3 py-1.5 rounded-xl bg-purple-500/90 hover:bg-purple-400 text-black text-xs font-bold flex items-center gap-1 active:scale-95 transition-all shadow-sm" title="Erase brushed object using AI inpainting">
+            <span class="material-symbols-outlined text-[16px]">healing</span> AI Inpaint Fill
           </button>
           <button onclick="PhotoStudio.setDrawTool('eraser')" id="btnDrawEraser" class="px-3 py-1.5 rounded-xl bg-[#141b2c] text-slate-300 hover:text-white text-xs font-bold flex items-center gap-1">
             <span class="material-symbols-outlined text-[16px]">ink_eraser</span> Eraser
@@ -1980,7 +2211,7 @@
         <span class="material-symbols-outlined text-[32px] text-cyan-400 group-hover:scale-110 transition-transform">cloud_upload</span>
         <span class="font-display font-bold text-xs text-white">Open from Device</span>
         <span class="text-[10px] text-slate-400">JPG, PNG, WEBP, RAW, HEIC</span>
-        <input type="file" id="inputStudioFileUpload" accept="image/*" class="hidden" onchange="PhotoStudio.handleImageImport(event)"/>
+        <input type="file" id="inputStudioFileUpload" accept="image/*" multiple class="hidden" onchange="PhotoStudio.handleImageImport(event)"/>
       </label>
 
       <!-- Live WebCam Capture Card -->
@@ -3609,15 +3840,41 @@ const VideoCanvas = {
   duration: 15.0,
   playbackRate: 1.0,
   effects: {
-    glitch: true,
+    glitch: false,
     velocity: false,
     scanlines: false,
-    vhs: false
+    vhs: false,
+    film01: false,
+    film02: false,
+    film03: false,
+    film04: false,
+    film05: false,
+    film06: false,
+    film07: false,
+    film09: false
   },
   img: new Image(),
   userVideo: null,
   lastFrameTime: 0,
   animationId: null,
+
+  filterShaderTab(tab) {
+    const btnFilm = document.getElementById('btnVidTab-film');
+    const btnRetro = document.getElementById('btnVidTab-retro');
+    const gridFilm = document.getElementById('vidShaders-film');
+    const gridRetro = document.getElementById('vidShaders-retro');
+    if (tab === 'film') {
+      if (btnFilm) btnFilm.className = 'px-2.5 py-0.5 rounded-full bg-primary text-white text-[10px] font-bold flex-shrink-0 flex items-center gap-1';
+      if (btnRetro) btnRetro.className = 'px-2.5 py-0.5 rounded-full neo-raised-sm text-secondary hover:text-primary text-[10px] font-bold flex-shrink-0 flex items-center gap-1';
+      if (gridFilm) gridFilm.classList.remove('hidden');
+      if (gridRetro) gridRetro.classList.add('hidden');
+    } else {
+      if (btnFilm) btnFilm.className = 'px-2.5 py-0.5 rounded-full neo-raised-sm text-secondary hover:text-primary text-[10px] font-bold flex-shrink-0 flex items-center gap-1';
+      if (btnRetro) btnRetro.className = 'px-2.5 py-0.5 rounded-full bg-primary text-white text-[10px] font-bold flex-shrink-0 flex items-center gap-1';
+      if (gridFilm) gridFilm.classList.add('hidden');
+      if (gridRetro) gridRetro.classList.remove('hidden');
+    }
+  },
 
   init() {
     this.canvas = document.getElementById('videoCanvas');
@@ -3656,11 +3913,19 @@ const VideoCanvas = {
     this.ctx.fillStyle = "#0c0d14";
     this.ctx.fillRect(0, 0, w, h);
 
+    // Dynamic Super 8 Gate Weave Jitter
+    let jitterX = 0;
+    let jitterY = 0;
+    if (this.effects.film03) {
+      jitterX = (Math.sin(this.currentTime * 30) * 2.5);
+      jitterY = (Math.cos(this.currentTime * 24) * 2.0);
+    }
+
     const zoom = 1 + Math.sin(this.currentTime * 2) * 0.04;
     const panX = Math.cos(this.currentTime) * 10;
 
     this.ctx.save();
-    this.ctx.translate(w / 2, h / 2);
+    this.ctx.translate(w / 2 + jitterX, h / 2 + jitterY);
     this.ctx.scale(zoom, zoom);
     this.ctx.translate(-w / 2 + panX, -h / 2);
 
@@ -3671,10 +3936,64 @@ const VideoCanvas = {
     }
     this.ctx.restore();
 
+    // 1. Film 04: Live Polaroid Frame (Hero Effect)
+    if (this.effects.film04) {
+      this.applyPolaroidVideoFrame(w, h);
+    }
+
+    // 2. Film 01: Warm 35mm Emulsion Tone
+    if (this.effects.film01) {
+      this.ctx.save();
+      this.ctx.globalCompositeOperation = 'soft-light';
+      this.ctx.fillStyle = 'rgba(255, 215, 170, 0.45)';
+      this.ctx.fillRect(0, 0, w, h);
+      this.ctx.globalCompositeOperation = 'screen';
+      this.ctx.fillStyle = 'rgba(40, 25, 20, 0.2)';
+      this.ctx.fillRect(0, 0, w, h);
+      this.ctx.restore();
+    }
+
+    // 3. Film 02: Animated Dust & Scratches
+    if (this.effects.film02) {
+      this.applyLiveDustAndScratches(w, h);
+    }
+
+    // 4. Film 03: Super 8 Projector Flicker & Aperture
+    if (this.effects.film03) {
+      this.ctx.save();
+      const flicker = 0.15 + Math.sin(this.currentTime * 45) * 0.08;
+      this.ctx.globalCompositeOperation = 'screen';
+      this.ctx.fillStyle = `rgba(255, 240, 200, ${flicker})`;
+      this.ctx.fillRect(0, 0, w, h);
+      this.ctx.restore();
+    }
+
+    // 5. Film 05: Dynamic Light Leak Burn
+    if (this.effects.film05) {
+      this.applyLiveLightLeak(w, h);
+    }
+
+    // 6. Film 06: 35mm Roll Film Strip Overlay
+    if (this.effects.film06) {
+      this.applyLiveRollFilmStrip(w, h);
+    }
+
+    // 7. Film 07: Cinema 2.35:1 Anamorphic Widescreen
+    if (this.effects.film07) {
+      this.applyLiveCinemaLetterbox(w, h);
+    }
+
+    // 8. Film 09: CineStill 800T Halation Bloom
+    if (this.effects.film09) {
+      this.applyLiveHalation(w, h);
+    }
+
+    // 9. RGB Glitch Split
     if (this.effects.glitch && (Math.sin(this.currentTime * 8) > 0.4 || Math.random() < 0.08)) {
       this.applyGlitch(w, h);
     }
 
+    // 10. CRT Scanlines
     if (this.effects.scanlines) {
       this.ctx.fillStyle = "rgba(0, 0, 0, 0.25)";
       for (let y = 0; y < h; y += 4) {
@@ -3682,6 +4001,7 @@ const VideoCanvas = {
       }
     }
 
+    // 11. VHS 90s Camcorder OSD
     if (this.effects.vhs) {
       this.ctx.fillStyle = "rgba(0, 255, 128, 0.85)";
       this.ctx.font = "bold 24px monospace";
@@ -3691,11 +4011,181 @@ const VideoCanvas = {
       this.ctx.fillText(`00:00:${secs < 10 ? '0' : ''}${secs}.${millis < 10 ? '0' : ''}${millis}`, 30, 100);
     }
 
-    const gradient = this.ctx.createRadialGradient(w/2, h/2, w*0.3, w/2, h/2, w*0.8);
-    gradient.addColorStop(0, "rgba(0,0,0,0)");
-    gradient.addColorStop(1, "rgba(0,0,0,0.6)");
-    this.ctx.fillStyle = gradient;
+    // Soft Vignette (only if not in Polaroid or Roll mode)
+    if (!this.effects.film04 && !this.effects.film06) {
+      const gradient = this.ctx.createRadialGradient(w/2, h/2, w*0.3, w/2, h/2, w*0.8);
+      gradient.addColorStop(0, "rgba(0,0,0,0)");
+      gradient.addColorStop(1, "rgba(0,0,0,0.5)");
+      this.ctx.fillStyle = gradient;
+      this.ctx.fillRect(0, 0, w, h);
+    }
+  },
+
+  applyPolaroidVideoFrame(w, h) {
+    // Snapshot current canvas
+    const buf = document.createElement('canvas');
+    buf.width = w;
+    buf.height = h;
+    const bCtx = buf.getContext('2d');
+    bCtx.drawImage(this.canvas, 0, 0);
+
+    // 1. Draw blurred and darkened background
+    this.ctx.save();
+    this.ctx.filter = 'blur(12px) brightness(0.6)';
+    this.ctx.drawImage(buf, -w * 0.04, -h * 0.04, w * 1.08, h * 1.08);
+    this.ctx.filter = 'none';
+
+    // 2. Draw tilted Polaroid Card
+    const cardW = Math.min(w, h) * 0.72;
+    const cardH = cardW * 1.22;
+    this.ctx.translate(w / 2, h / 2);
+    this.ctx.rotate(-0.06);
+
+    // Drop shadow
+    this.ctx.shadowColor = 'rgba(0, 0, 0, 0.75)';
+    this.ctx.shadowBlur = 30;
+    this.ctx.shadowOffsetY = 16;
+
+    // Polaroid Card
+    this.ctx.fillStyle = '#f7f6f2';
+    const borderX = cardW * 0.068;
+    const borderTop = borderX;
+    const borderBottom = cardW * 0.25;
+    const pW = cardW - borderX * 2;
+    const pH = cardH - borderTop - borderBottom;
+    const pX = -cardW / 2 + borderX;
+    const pY = -cardH / 2 + borderTop;
+
+    // Draw card body with rounded corners
+    this.ctx.beginPath();
+    this.ctx.roundRect(-cardW / 2, -cardH / 2, cardW, cardH, 8);
+    this.ctx.fill();
+
+    // Reset shadow
+    this.ctx.shadowColor = 'transparent';
+
+    // Draw crisp video in cutout
+    this.ctx.save();
+    this.ctx.beginPath();
+    this.ctx.rect(pX, pY, pW, pH);
+    this.ctx.clip();
+    this.ctx.drawImage(buf, pX, pY, pW, pH);
+
+    // Diagonal optical light leak reflection
+    this.ctx.globalCompositeOperation = 'screen';
+    const flare = this.ctx.createLinearGradient(pX + pW * 0.4, pY, pX + pW, pY + pH * 0.8);
+    flare.addColorStop(0, 'rgba(255, 30, 0, 0.45)');
+    flare.addColorStop(0.5, 'rgba(255, 180, 0, 0.35)');
+    flare.addColorStop(0.8, 'rgba(0, 255, 140, 0.2)');
+    flare.addColorStop(1, 'transparent');
+    this.ctx.fillStyle = flare;
+    this.ctx.fillRect(pX, pY, pW, pH);
+    this.ctx.restore();
+
+    this.ctx.restore();
+  },
+
+  applyLiveDustAndScratches(w, h) {
+    this.ctx.save();
+    const frameSeed = Math.floor(this.currentTime * 12);
+    const count = 25;
+    for (let i = 0; i < count; i++) {
+      const sx = ((i * 157.3 + frameSeed * 91) % w);
+      const sy = ((i * 271.7 + frameSeed * 137) % h);
+      const r = (i % 3 === 0) ? 1.6 : 0.9;
+      this.ctx.fillStyle = (i % 2 === 0) ? 'rgba(240, 240, 240, 0.8)' : 'rgba(20, 20, 20, 0.7)';
+      this.ctx.beginPath();
+      this.ctx.arc(sx, sy, r, 0, Math.PI * 2);
+      this.ctx.fill();
+    }
+    // Jumping scratch line
+    const scratchX = (w * 0.32 + Math.sin(frameSeed * 5) * 6);
+    this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.6)';
+    this.ctx.lineWidth = 1;
+    this.ctx.beginPath();
+    this.ctx.moveTo(scratchX, 0);
+    this.ctx.lineTo(scratchX + 1, h);
+    this.ctx.stroke();
+    this.ctx.restore();
+  },
+
+  applyLiveLightLeak(w, h) {
+    this.ctx.save();
+    this.ctx.globalCompositeOperation = 'screen';
+    const pulse = 0.65 + Math.sin(this.currentTime * 3) * 0.25;
+    const g = this.ctx.createRadialGradient(w * 0.9, h * 0.1, 10, w * 0.9, h * 0.1, w * 0.75);
+    g.addColorStop(0, `rgba(255, 45, 0, ${0.85 * pulse})`);
+    g.addColorStop(0.4, `rgba(255, 140, 0, ${0.55 * pulse})`);
+    g.addColorStop(0.8, `rgba(255, 230, 40, ${0.25 * pulse})`);
+    g.addColorStop(1, 'transparent');
+    this.ctx.fillStyle = g;
     this.ctx.fillRect(0, 0, w, h);
+    this.ctx.restore();
+  },
+
+  applyLiveRollFilmStrip(w, h) {
+    this.ctx.save();
+    const borderH = Math.round(h * 0.14);
+    this.ctx.fillStyle = '#0a0a0f';
+    this.ctx.fillRect(0, 0, w, borderH);
+    this.ctx.fillRect(0, h - borderH, w, borderH);
+
+    const holeW = Math.max(14, Math.round(w * 0.025));
+    const holeH = Math.max(18, Math.round(borderH * 0.52));
+    const holeGap = Math.max(28, Math.round(holeW * 2.2));
+    const topHoleY = Math.round((borderH - holeH) / 2);
+    const btmHoleY = Math.round(h - borderH + (borderH - holeH) / 2);
+
+    this.ctx.fillStyle = '#000000';
+    for (let x = holeGap / 2; x < w; x += holeGap) {
+      this.ctx.beginPath();
+      this.ctx.roundRect(x, topHoleY, holeW, holeH, 4);
+      this.ctx.fill();
+      this.ctx.beginPath();
+      this.ctx.roundRect(x, btmHoleY, holeW, holeH, 4);
+      this.ctx.fill();
+    }
+
+    this.ctx.fillStyle = 'rgba(255, 175, 50, 0.85)';
+    this.ctx.font = `bold ${Math.max(10, Math.round(borderH * 0.22))}px monospace`;
+    this.ctx.textBaseline = 'middle';
+    this.ctx.fillText("▶ KODAK PORTRA 400", 25, borderH * 0.22);
+    this.ctx.fillText("35mm SAFETY FILM", w * 0.45, borderH * 0.22);
+    this.ctx.fillText("24A", w - 75, borderH * 0.22);
+    this.ctx.fillText("24", 25, h - borderH * 0.22);
+    this.ctx.fillText("DX 400-36/24", w * 0.45, h - borderH * 0.22);
+    this.ctx.fillText("▶▶ 25", w - 75, h - borderH * 0.22);
+    this.ctx.restore();
+  },
+
+  applyLiveCinemaLetterbox(w, h) {
+    this.ctx.save();
+    const targetH = w / 2.35;
+    const barH = Math.max(0, (h - targetH) / 2);
+    this.ctx.fillStyle = '#000000';
+    this.ctx.fillRect(0, 0, w, barH);
+    this.ctx.fillRect(0, h - barH, w, barH);
+
+    // Anamorphic horizontal streak
+    this.ctx.globalCompositeOperation = 'screen';
+    const flareY = h * 0.48;
+    const streak = this.ctx.createLinearGradient(0, flareY, w, flareY);
+    streak.addColorStop(0, 'transparent');
+    streak.addColorStop(0.3, 'rgba(0, 190, 255, 0.3)');
+    streak.addColorStop(0.5, 'rgba(180, 245, 255, 0.85)');
+    streak.addColorStop(0.7, 'rgba(0, 190, 255, 0.3)');
+    streak.addColorStop(1, 'transparent');
+    this.ctx.fillStyle = streak;
+    this.ctx.fillRect(0, flareY - 3, w, 6);
+    this.ctx.restore();
+  },
+
+  applyLiveHalation(w, h) {
+    this.ctx.save();
+    this.ctx.globalCompositeOperation = 'screen';
+    this.ctx.fillStyle = 'rgba(255, 45, 0, 0.2)';
+    this.ctx.fillRect(0, 0, w, h);
+    this.ctx.restore();
   },
 
   applyGlitch(w, h) {
@@ -3735,7 +4225,15 @@ const VideoCanvas = {
       glitch: 'fxToggleGlitch',
       velocity: 'fxToggleVelocity',
       scanlines: 'fxToggleScanlines',
-      vhs: 'fxToggleVhs'
+      vhs: 'fxToggleVhs',
+      film01: 'fxToggleFilm01',
+      film02: 'fxToggleFilm02',
+      film03: 'fxToggleFilm03',
+      film04: 'fxToggleFilm04',
+      film05: 'fxToggleFilm05',
+      film06: 'fxToggleFilm06',
+      film07: 'fxToggleFilm07',
+      film09: 'fxToggleFilm09'
     };
     const btn = document.getElementById(btnMap[fxName]);
     if (btn) {
@@ -3891,7 +4389,11 @@ const PhotoStudio = {
   // Active Filter & Effects
   activeFilter: null,
   filterIntensity: 100,
+  selectedFilterCategory: 'all',
   activeEffect: null,
+  effectIntensity: 85,
+  effectCategory: 'film',
+  isCollageMode: false,
 
   // Drawing tool state
   drawTool: {
@@ -4107,13 +4609,17 @@ const PhotoStudio = {
     const tintVal = adj.tint; // Green vs Magenta
     const hasHslShift = Object.values(this.hsl).some(c => typeof c === 'object' && (c.hue !== 0 || c.sat !== 0 || c.lum !== 0));
 
-    // Center coordinates for Vignette calculation
+    // Center coordinates for Vignette calculation & Color Pop
     const w = imgData.width;
     const h = imgData.height;
     const cx = w / 2;
     const cy = h / 2;
     const maxDist = Math.sqrt(cx * cx + cy * cy);
     const vignetteAmount = adj.vignette / 100;
+
+    // Active filter recipe from Filterous-2 & Photocrate
+    const activeFilterRecipe = (this.activeFilter && this.activeFilter !== 'none') ? this.filterRecipes[this.activeFilter] : null;
+    const filterFactor = (this.filterIntensity || 100) / 100;
 
     for (let i = 0; i < len; i += 4) {
       let r = data[i];
@@ -4184,6 +4690,105 @@ const PhotoStudio = {
       g = lutRGB[lutG[Math.round(g)]];
       b = lutRGB[lutB[Math.round(b)]];
 
+      // --- F2. Clarity (Midtone Local Contrast Enhancement) ---
+      if (adj.clarity !== 0) {
+        const lum = 0.299 * r + 0.587 * g + 0.114 * b;
+        if (lum > 30 && lum < 225) {
+          const clarityDelta = ((lum - 128) / 128) * (adj.clarity * 0.45);
+          r += clarityDelta;
+          g += clarityDelta;
+          b += clarityDelta;
+        }
+      }
+
+      // --- F3. Active Preset & Instagram Filter Pipeline (Filterous-2 & Photocrate) ---
+      if (activeFilterRecipe) {
+        const px = (i / 4) % w;
+        const py = Math.floor((i / 4) / w);
+        let fr = r, fg = g, fb = b;
+
+        // Grayscale
+        if (activeFilterRecipe.grayscale) {
+          const avg = 0.2126 * fr + 0.7152 * fg + 0.0722 * fb;
+          fr = fg = fb = avg;
+        }
+
+        // Sepia (Intel Cilk Plus / Filterous formula)
+        if (activeFilterRecipe.sepia) {
+          const sAdj = activeFilterRecipe.sepia;
+          const sR = (fr * (1 - 0.607 * sAdj)) + (fg * 0.769 * sAdj) + (fb * 0.189 * sAdj);
+          const sG = (fr * 0.349 * sAdj) + (fg * (1 - 0.314 * sAdj)) + (fb * 0.168 * sAdj);
+          const sB = (fr * 0.272 * sAdj) + (fg * 0.534 * sAdj) + (fb * (1 - 0.869 * sAdj));
+          fr = sR; fg = sG; fb = sB;
+        }
+
+        // Brightness
+        if (activeFilterRecipe.brightness) {
+          const bDelta = 255 * activeFilterRecipe.brightness;
+          fr += bDelta; fg += bDelta; fb += bDelta;
+        }
+
+        // Contrast
+        if (activeFilterRecipe.contrast) {
+          const cAdj = activeFilterRecipe.contrast * 255;
+          const cFactor = (259 * (cAdj + 255)) / (255 * (259 - cAdj));
+          fr = cFactor * (fr - 128) + 128;
+          fg = cFactor * (fg - 128) + 128;
+          fb = cFactor * (fb - 128) + 128;
+        }
+
+        // Saturation (Perceived saturation weights from CCIR 601)
+        if (activeFilterRecipe.saturation) {
+          const sAdj = activeFilterRecipe.saturation;
+          const gray = 0.2989 * fr + 0.5870 * fg + 0.1140 * fb;
+          fr = -gray * sAdj + fr * (1 + sAdj);
+          fg = -gray * sAdj + fg * (1 + sAdj);
+          fb = -gray * sAdj + fb * (1 + sAdj);
+        }
+
+        // ColorFilter overlay [r, g, b, alpha]
+        if (activeFilterRecipe.colorFilter) {
+          const cf = activeFilterRecipe.colorFilter;
+          fr -= (fr - cf[0]) * cf[3];
+          fg -= (fg - cf[1]) * cf[3];
+          fb -= (fb - cf[2]) * cf[3];
+        }
+
+        // RGB Adjust channel multipliers [rMult, gMult, bMult]
+        if (activeFilterRecipe.rgbAdjust) {
+          const ra = activeFilterRecipe.rgbAdjust;
+          fr *= ra[0]; fg *= ra[1]; fb *= ra[2];
+        }
+
+        // Color Pop (Photocrate subject prominence)
+        if (activeFilterRecipe.colorPop) {
+          const dx = (px - cx) / cx;
+          const dy = (py - cy) / cy;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          const isSkin = (fr > 65 && fg > 45 && fb > 25 && fr > fg && fr > fb && (fr - fg) > 12);
+          const subjectWeight = isSkin ? 1.0 : Math.max(0, Math.min(1, 1.35 - dist * 1.5));
+          const bw = 0.299 * fr + 0.587 * fg + 0.114 * fb;
+          fr = bw * (1 - subjectWeight) + fr * subjectWeight;
+          fg = bw * (1 - subjectWeight) + fg * subjectWeight;
+          fb = bw * (1 - subjectWeight) + fb * subjectWeight;
+        }
+
+        // Temperature & Exposure in LUTs
+        if (activeFilterRecipe.temperature) {
+          fr += activeFilterRecipe.temperature * 0.75;
+          fb -= activeFilterRecipe.temperature * 0.75;
+        }
+        if (activeFilterRecipe.exposure) {
+          const expF = Math.pow(2, activeFilterRecipe.exposure / 40);
+          fr *= expF; fg *= expF; fb *= expF;
+        }
+
+        // Blend filter with original pixel using filterIntensity
+        r = r * (1 - filterFactor) + fr * filterFactor;
+        g = g * (1 - filterFactor) + fg * filterFactor;
+        b = b * (1 - filterFactor) + fb * filterFactor;
+      }
+
       // --- G. Vignette Falloff ---
       if (vignetteAmount !== 0) {
         const px = (i / 4) % w;
@@ -4200,6 +4805,50 @@ const PhotoStudio = {
       data[i + 1] = Math.max(0, Math.min(255, g));
       data[i + 2] = Math.max(0, Math.min(255, b));
     }
+
+    // --- H. Sharpness (3x3 Convolution Unsharp Mask from Filterous-2) ---
+    if (adj.sharpness > 0) {
+      const k = (adj.sharpness / 100) * 1.25;
+      const sharpenKernel = [
+        0, -k / 4, 0,
+        -k / 4, 1 + k, -k / 4,
+        0, -k / 4, 0
+      ];
+      this.applyConvolution(imgData, sharpenKernel);
+    }
+  },
+
+  // 3x3 Matrix Convolution Engine (Filterous-2)
+  applyConvolution(imgData, weights) {
+    const side = Math.round(Math.sqrt(weights.length));
+    const halfSide = Math.floor(side / 2);
+    const src = imgData.data;
+    const sw = imgData.width;
+    const sh = imgData.height;
+    const output = new Uint8ClampedArray(src.length);
+    output.set(src);
+
+    for (let y = 0; y < sh; y++) {
+      for (let x = 0; x < sw; x++) {
+        let r = 0, g = 0, b = 0;
+        for (let cy = 0; cy < side; cy++) {
+          for (let cx = 0; cx < side; cx++) {
+            const scy = Math.min(sh - 1, Math.max(0, y + cy - halfSide));
+            const scx = Math.min(sw - 1, Math.max(0, x + cx - halfSide));
+            const srcOff = (scy * sw + scx) * 4;
+            const wt = weights[cy * side + cx];
+            r += src[srcOff] * wt;
+            g += src[srcOff + 1] * wt;
+            b += src[srcOff + 2] * wt;
+          }
+        }
+        const dstOff = (y * sw + x) * 4;
+        output[dstOff] = Math.max(0, Math.min(255, r));
+        output[dstOff + 1] = Math.max(0, Math.min(255, g));
+        output[dstOff + 2] = Math.max(0, Math.min(255, b));
+      }
+    }
+    src.set(output);
   },
 
   // RGB <-> HSL Math Converters
@@ -4440,34 +5089,622 @@ const PhotoStudio = {
     this.ctx.restore();
   },
 
+  drawGrain(w, h, amount) {
+    const grainImg = this.ctx.createImageData(w, h);
+    const gData = grainImg.data;
+    const amp = amount || 30;
+    for (let k = 0; k < gData.length; k += 4) {
+      const noise = (Math.random() - 0.5) * amp;
+      const v = noise > 0 ? 255 : 0;
+      gData[k] = v;
+      gData[k + 1] = v;
+      gData[k + 2] = v;
+      gData[k + 3] = Math.abs(noise);
+    }
+    const tmp = document.createElement('canvas');
+    tmp.width = w;
+    tmp.height = h;
+    tmp.getContext('2d').putImageData(grainImg, 0, 0);
+
+    this.ctx.save();
+    this.ctx.globalCompositeOperation = 'soft-light';
+    this.ctx.drawImage(tmp, 0, 0);
+    this.ctx.restore();
+  },
+
+  drawRoundRect(x, y, w, h, r) {
+    this.ctx.beginPath();
+    if (this.ctx.roundRect) {
+      this.ctx.roundRect(x, y, w, h, r);
+    } else {
+      this.ctx.rect(x, y, w, h);
+    }
+  },
+
   renderActiveEffect(w, h) {
-    if (this.activeEffect === 'glitch') {
-      const sliceCount = 4;
-      for (let i = 0; i < sliceCount; i++) {
-        const sliceY = (h / sliceCount) * i + 15;
-        const sliceH = 35;
-        const shiftX = (Math.sin(i * 3.7) * 25);
-        this.ctx.drawImage(this.canvas, 0, sliceY, w, sliceH, shiftX, sliceY, w, sliceH);
+    if (!this.activeEffect) return;
+    const factor = (this.effectIntensity || 85) / 100;
+
+    switch (this.activeEffect) {
+      // -------------------------------------------------------------
+      // INSHOT FILM PACK (ALL 12 EFFECTS)
+      // -------------------------------------------------------------
+      case 'film01': { // 35mm Analog Warm
+        this.ctx.save();
+        this.ctx.globalCompositeOperation = 'soft-light';
+        this.ctx.fillStyle = `rgba(255, 215, 175, ${0.45 * factor})`;
+        this.ctx.fillRect(0, 0, w, h);
+
+        this.ctx.globalCompositeOperation = 'screen';
+        this.ctx.fillStyle = `rgba(40, 25, 20, ${0.22 * factor})`;
+        this.ctx.fillRect(0, 0, w, h);
+
+        this.ctx.globalCompositeOperation = 'multiply';
+        const vig = this.ctx.createRadialGradient(w/2, h/2, w*0.3, w/2, h/2, w*0.75);
+        vig.addColorStop(0, 'rgba(255,255,255,1)');
+        vig.addColorStop(1, `rgba(${Math.round(255 - 60*factor)}, ${Math.round(255 - 60*factor)}, ${Math.round(255 - 60*factor)}, 1)`);
+        this.ctx.fillStyle = vig;
+        this.ctx.fillRect(0, 0, w, h);
+        this.ctx.restore();
+        this.drawGrain(w, h, 28 * factor);
+        break;
       }
-    } else if (this.activeEffect === 'lightLeak') {
-      const grad = this.ctx.createRadialGradient(w * 0.85, 0, 10, w * 0.85, 0, w * 0.7);
-      grad.addColorStop(0, 'rgba(255, 140, 0, 0.45)');
-      grad.addColorStop(0.5, 'rgba(255, 0, 128, 0.2)');
-      grad.addColorStop(1, 'transparent');
-      this.ctx.fillStyle = grad;
-      this.ctx.fillRect(0, 0, w, h);
-    } else if (this.activeEffect === 'grain') {
-      // Real procedural film grain
-      const grainImg = this.ctx.createImageData(w, h);
-      const gData = grainImg.data;
-      for (let k = 0; k < gData.length; k += 4) {
-        const noise = (Math.random() - 0.5) * 45;
-        gData[k] = noise > 0 ? 255 : 0;
-        gData[k + 1] = noise > 0 ? 255 : 0;
-        gData[k + 2] = noise > 0 ? 255 : 0;
-        gData[k + 3] = Math.abs(noise);
+
+      case 'film02': { // Dust & Scratches
+        this.ctx.save();
+        // 1. Random Dust Specks
+        const count = Math.floor(45 * factor);
+        for (let i = 0; i < count; i++) {
+          const sx = ((i * 137.5 + 47) % w);
+          const sy = ((i * 269.3 + 93) % h);
+          const r = (i % 3 === 0) ? 1.8 : (i % 2 === 0 ? 1.2 : 0.8);
+          const isDark = (i % 3 !== 0);
+          this.ctx.fillStyle = isDark ? `rgba(15, 15, 15, ${0.75 * factor})` : `rgba(250, 250, 250, ${0.85 * factor})`;
+          this.ctx.beginPath();
+          this.ctx.arc(sx, sy, r, 0, Math.PI * 2);
+          this.ctx.fill();
+        }
+        // 2. Vertical scratch lines
+        const scratchX1 = w * 0.28;
+        const scratchX2 = w * 0.73;
+        this.ctx.strokeStyle = `rgba(255, 255, 255, ${0.65 * factor})`;
+        this.ctx.lineWidth = 1;
+        this.ctx.beginPath();
+        this.ctx.moveTo(scratchX1, 0);
+        this.ctx.lineTo(scratchX1 + 1.5, h * 0.45);
+        this.ctx.moveTo(scratchX1 - 1, h * 0.5);
+        this.ctx.lineTo(scratchX1, h);
+        this.ctx.stroke();
+
+        this.ctx.strokeStyle = `rgba(20, 20, 20, ${0.55 * factor})`;
+        this.ctx.beginPath();
+        this.ctx.moveTo(scratchX2, 0);
+        this.ctx.lineTo(scratchX2 - 2, h * 0.7);
+        this.ctx.stroke();
+
+        // 3. Curved hair fiber artifact
+        const hx = w * 0.65;
+        const hy = h * 0.35;
+        this.ctx.strokeStyle = `rgba(25, 25, 25, ${0.8 * factor})`;
+        this.ctx.lineWidth = 1.3;
+        this.ctx.beginPath();
+        this.ctx.moveTo(hx, hy);
+        this.ctx.bezierCurveTo(hx + 25, hy - 40, hx - 20, hy - 70, hx + 15, hy - 110);
+        this.ctx.stroke();
+        this.ctx.restore();
+        this.drawGrain(w, h, 38 * factor);
+        break;
       }
-      this.ctx.putImageData(grainImg, 0, 0);
+
+      case 'film03': { // Super 8mm
+        this.ctx.save();
+        this.ctx.globalCompositeOperation = 'color';
+        this.ctx.fillStyle = `rgba(255, 175, 75, ${0.28 * factor})`;
+        this.ctx.fillRect(0, 0, w, h);
+
+        this.ctx.globalCompositeOperation = 'screen';
+        const spot = this.ctx.createRadialGradient(w/2, h/2, 10, w/2, h/2, w*0.6);
+        spot.addColorStop(0, `rgba(255, 245, 210, ${0.35 * factor})`);
+        spot.addColorStop(1, 'transparent');
+        this.ctx.fillStyle = spot;
+        this.ctx.fillRect(0, 0, w, h);
+
+        // Rounded aperture frame
+        this.ctx.globalCompositeOperation = 'source-over';
+        this.ctx.fillStyle = '#08080a';
+        const pad = Math.min(w, h) * 0.045 * factor;
+        this.ctx.fillRect(0, 0, w, pad);
+        this.ctx.fillRect(0, h - pad, w, pad);
+        this.ctx.fillRect(0, 0, pad, h);
+        this.ctx.fillRect(w - pad, 0, pad, h);
+        this.ctx.restore();
+        this.drawGrain(w, h, 42 * factor);
+        break;
+      }
+
+      case 'film04': { // Polaroid Frame (Hero Effect from YouTube Shorts)
+        const buffer = document.createElement('canvas');
+        buffer.width = w;
+        buffer.height = h;
+        buffer.getContext('2d').drawImage(this.canvas, 0, 0);
+
+        this.ctx.save();
+        // 1. Blurred and darkened background
+        this.ctx.filter = `blur(${Math.round(14 * factor)}px) brightness(${1 - 0.35 * factor})`;
+        this.ctx.drawImage(buffer, -w * 0.04, -h * 0.04, w * 1.08, h * 1.08);
+        this.ctx.filter = 'none';
+
+        // 2. Dark vignette
+        const bgVig = this.ctx.createRadialGradient(w/2, h/2, w*0.2, w/2, h/2, w*0.75);
+        bgVig.addColorStop(0, 'rgba(0,0,0,0.15)');
+        bgVig.addColorStop(1, `rgba(0,0,0,${0.65 * factor})`);
+        this.ctx.fillStyle = bgVig;
+        this.ctx.fillRect(0, 0, w, h);
+
+        // 3. Tilted Polaroid Card in foreground
+        const cx = w / 2;
+        const cy = h / 2;
+        const cardW = Math.min(w, h) * 0.72;
+        const cardH = cardW * 1.22;
+        const angle = -0.065; // ~ -3.7 degrees tilt
+
+        this.ctx.translate(cx, cy);
+        this.ctx.rotate(angle);
+
+        // Drop shadow
+        this.ctx.shadowColor = 'rgba(0, 0, 0, 0.75)';
+        this.ctx.shadowBlur = 35 * factor;
+        this.ctx.shadowOffsetX = 12 * factor;
+        this.ctx.shadowOffsetY = 18 * factor;
+
+        // White Polaroid Card Body
+        this.ctx.fillStyle = '#f8f7f2';
+        this.drawRoundRect(-cardW/2, -cardH/2, cardW, cardH, 8);
+        this.ctx.fill();
+
+        // Reset shadow
+        this.ctx.shadowColor = 'transparent';
+        this.ctx.shadowBlur = 0;
+        this.ctx.shadowOffsetX = 0;
+        this.ctx.shadowOffsetY = 0;
+
+        // Inner photo frame dimensions
+        const borderX = cardW * 0.068;
+        const borderTop = borderX;
+        const borderBottom = cardW * 0.26;
+        const photoW = cardW - borderX * 2;
+        const photoH = cardH - borderTop - borderBottom;
+        const photoX = -cardW/2 + borderX;
+        const photoY = -cardH/2 + borderTop;
+
+        // Photo cutout edge bevel
+        this.ctx.fillStyle = '#dad8cf';
+        this.ctx.fillRect(photoX - 1, photoY - 1, photoW + 2, photoH + 2);
+
+        // Draw crisp unblurred image inside cutout
+        this.ctx.save();
+        this.ctx.beginPath();
+        this.ctx.rect(photoX, photoY, photoW, photoH);
+        this.ctx.clip();
+        this.ctx.drawImage(buffer, photoX, photoY, photoW, photoH);
+
+        // Inner warm tone
+        this.ctx.globalCompositeOperation = 'soft-light';
+        this.ctx.fillStyle = 'rgba(255, 230, 200, 0.25)';
+        this.ctx.fillRect(photoX, photoY, photoW, photoH);
+
+        // Diagonal optical light streak across photo (as seen on the short!)
+        this.ctx.globalCompositeOperation = 'screen';
+        const streak = this.ctx.createLinearGradient(photoX + photoW * 0.5, photoY, photoX + photoW, photoY + photoH * 0.7);
+        streak.addColorStop(0, 'rgba(255, 30, 0, 0.55)');
+        streak.addColorStop(0.5, 'rgba(255, 170, 0, 0.4)');
+        streak.addColorStop(0.8, 'rgba(0, 255, 120, 0.25)');
+        streak.addColorStop(1, 'transparent');
+        this.ctx.fillStyle = streak;
+        this.ctx.fillRect(photoX, photoY, photoW, photoH);
+        this.ctx.restore();
+
+        // Polaroid gloss sheen
+        this.ctx.save();
+        this.ctx.globalCompositeOperation = 'screen';
+        const gloss = this.ctx.createLinearGradient(-cardW/2, -cardH/2, cardW/2, cardH/2);
+        gloss.addColorStop(0, 'rgba(255, 255, 255, 0.12)');
+        gloss.addColorStop(0.3, 'rgba(255, 255, 255, 0.03)');
+        gloss.addColorStop(0.35, 'transparent');
+        this.ctx.fillStyle = gloss;
+        this.drawRoundRect(-cardW/2, -cardH/2, cardW, cardH, 8);
+        this.ctx.fill();
+        this.ctx.restore();
+
+        this.ctx.restore();
+        break;
+      }
+
+      case 'film05': { // Light Leak Burn
+        this.ctx.save();
+        this.ctx.globalCompositeOperation = 'screen';
+        const g1 = this.ctx.createRadialGradient(w * 0.95, h * 0.05, 10, w * 0.95, h * 0.05, w * 0.85);
+        g1.addColorStop(0, `rgba(255, 45, 0, ${0.85 * factor})`);
+        g1.addColorStop(0.35, `rgba(255, 140, 0, ${0.65 * factor})`);
+        g1.addColorStop(0.7, `rgba(255, 230, 40, ${0.35 * factor})`);
+        g1.addColorStop(0.9, `rgba(255, 0, 120, ${0.15 * factor})`);
+        g1.addColorStop(1, 'transparent');
+        this.ctx.fillStyle = g1;
+        this.ctx.fillRect(0, 0, w, h);
+
+        const g2 = this.ctx.createRadialGradient(w * 0.1, h * 0.9, 10, w * 0.1, h * 0.9, w * 0.55);
+        g2.addColorStop(0, `rgba(255, 80, 20, ${0.55 * factor})`);
+        g2.addColorStop(0.6, `rgba(255, 160, 40, ${0.25 * factor})`);
+        g2.addColorStop(1, 'transparent');
+        this.ctx.fillStyle = g2;
+        this.ctx.fillRect(0, 0, w, h);
+        this.ctx.restore();
+        break;
+      }
+
+      case 'film06': { // 35mm Roll Film Strip
+        this.ctx.save();
+        const borderH = Math.round(h * 0.13 * factor);
+        this.ctx.fillStyle = '#0b0c10';
+        this.ctx.fillRect(0, 0, w, borderH);
+        this.ctx.fillRect(0, h - borderH, w, borderH);
+
+        const holeW = Math.max(14, Math.round(w * 0.024));
+        const holeH = Math.max(20, Math.round(borderH * 0.52));
+        const holeGap = Math.max(26, Math.round(holeW * 2.1));
+        const holeR = 4;
+        const topHoleY = Math.round((borderH - holeH) / 2);
+        const btmHoleY = Math.round(h - borderH + (borderH - holeH) / 2);
+
+        this.ctx.fillStyle = '#000000';
+        for (let x = holeGap / 2; x < w; x += holeGap) {
+          this.drawRoundRect(x, topHoleY, holeW, holeH, holeR);
+          this.ctx.fill();
+          this.drawRoundRect(x, btmHoleY, holeW, holeH, holeR);
+          this.ctx.fill();
+        }
+
+        this.ctx.fillStyle = `rgba(255, 175, 50, ${0.85 * factor})`;
+        this.ctx.font = `bold ${Math.max(10, Math.round(borderH * 0.22))}px monospace`;
+        this.ctx.textBaseline = 'middle';
+        this.ctx.fillText("▶ KODAK PORTRA 400", 25, borderH * 0.2);
+        this.ctx.fillText("35mm SAFETY FILM", w * 0.45, borderH * 0.2);
+        this.ctx.fillText("24A", w - 80, borderH * 0.2);
+        this.ctx.fillText("24", 25, h - borderH * 0.2);
+        this.ctx.fillText("DX 400-36/24", w * 0.45, h - borderH * 0.2);
+        this.ctx.fillText("▶▶ 25", w - 80, h - borderH * 0.2);
+        this.ctx.restore();
+        break;
+      }
+
+      case 'film07': { // Cinema 2.35:1 Widescreen
+        this.ctx.save();
+        const targetH = w / 2.35;
+        const barH = Math.max(0, (h - targetH) / 2);
+        this.ctx.fillStyle = '#000000';
+        this.ctx.fillRect(0, 0, w, barH);
+        this.ctx.fillRect(0, h - barH, w, barH);
+
+        this.ctx.globalCompositeOperation = 'overlay';
+        this.ctx.fillStyle = `rgba(0, 110, 140, ${0.28 * factor})`;
+        this.ctx.fillRect(0, barH, w, h - barH * 2);
+
+        this.ctx.globalCompositeOperation = 'soft-light';
+        this.ctx.fillStyle = `rgba(255, 150, 40, ${0.25 * factor})`;
+        this.ctx.fillRect(0, barH, w, h - barH * 2);
+
+        this.ctx.globalCompositeOperation = 'screen';
+        const flareY = h * 0.48;
+        const flareH = Math.max(3, Math.round(h * 0.012));
+        const flareGrad = this.ctx.createLinearGradient(0, flareY, w, flareY);
+        flareGrad.addColorStop(0, 'transparent');
+        flareGrad.addColorStop(0.3, `rgba(0, 190, 255, ${0.35 * factor})`);
+        flareGrad.addColorStop(0.5, `rgba(180, 245, 255, ${0.9 * factor})`);
+        flareGrad.addColorStop(0.7, `rgba(0, 190, 255, ${0.35 * factor})`);
+        flareGrad.addColorStop(1, 'transparent');
+        this.ctx.fillStyle = flareGrad;
+        this.ctx.fillRect(0, flareY - flareH/2, w, flareH);
+
+        const blob = this.ctx.createRadialGradient(w * 0.5, flareY, 2, w * 0.5, flareY, 70);
+        blob.addColorStop(0, `rgba(220, 250, 255, ${0.85 * factor})`);
+        blob.addColorStop(0.4, `rgba(0, 180, 255, ${0.4 * factor})`);
+        blob.addColorStop(1, 'transparent');
+        this.ctx.fillStyle = blob;
+        this.ctx.beginPath();
+        this.ctx.arc(w * 0.5, flareY, 70, 0, Math.PI * 2);
+        this.ctx.fill();
+        this.ctx.restore();
+        break;
+      }
+
+      case 'film08': { // Color Negative
+        const imgData = this.ctx.getImageData(0, 0, w, h);
+        const d = imgData.data;
+        for (let i = 0; i < d.length; i += 4) {
+          const invR = 255 - d[i];
+          const invG = 255 - d[i+1];
+          const invB = 255 - d[i+2];
+          const maskR = 210, maskG = 112, maskB = 48;
+          const mixedR = (invR * 0.7 + maskR * 0.3);
+          const mixedG = (invG * 0.6 + maskG * 0.4);
+          const mixedB = (invB * 0.5 + maskB * 0.5);
+          d[i] = d[i] * (1 - factor) + mixedR * factor;
+          d[i+1] = d[i+1] * (1 - factor) + mixedG * factor;
+          d[i+2] = d[i+2] * (1 - factor) + mixedB * factor;
+        }
+        this.ctx.putImageData(imgData, 0, 0);
+        break;
+      }
+
+      case 'film09': { // CineStill 800T Halation
+        const buffer = document.createElement('canvas');
+        buffer.width = w;
+        buffer.height = h;
+        const bCtx = buffer.getContext('2d');
+        bCtx.drawImage(this.canvas, 0, 0);
+
+        const imgData = bCtx.getImageData(0, 0, w, h);
+        const d = imgData.data;
+        for (let i = 0; i < d.length; i += 4) {
+          const luma = 0.299 * d[i] + 0.587 * d[i+1] + 0.114 * d[i+2];
+          if (luma > 175) {
+            const intensity = (luma - 175) / 80;
+            d[i] = 255;
+            d[i+1] = Math.round(55 * intensity);
+            d[i+2] = Math.round(15 * intensity);
+            d[i+3] = Math.round(255 * intensity * factor);
+          } else {
+            d[i+3] = 0;
+          }
+        }
+        bCtx.putImageData(imgData, 0, 0);
+
+        this.ctx.save();
+        this.ctx.globalCompositeOperation = 'screen';
+        this.ctx.filter = `blur(${Math.round(16 * factor)}px)`;
+        this.ctx.drawImage(buffer, 0, 0);
+        this.ctx.filter = `blur(${Math.round(6 * factor)}px)`;
+        this.ctx.drawImage(buffer, 0, 0);
+        this.ctx.restore();
+        break;
+      }
+
+      case 'film10': { // Prism Diopter
+        const sliceW = w * 0.45;
+        this.ctx.save();
+        this.ctx.globalCompositeOperation = 'screen';
+        this.ctx.drawImage(this.canvas, 0, 0, sliceW, h, -8 * factor, 0, sliceW, h);
+        this.ctx.fillStyle = `rgba(255, 0, 100, ${0.15 * factor})`;
+        this.ctx.fillRect(0, 0, sliceW, h);
+        this.ctx.fillStyle = `rgba(0, 200, 255, ${0.15 * factor})`;
+        this.ctx.fillRect(0, 0, sliceW, h);
+        this.ctx.restore();
+        break;
+      }
+
+      case 'film11': { // 8mm Projector
+        this.ctx.save();
+        this.ctx.globalCompositeOperation = 'color';
+        this.ctx.fillStyle = `rgba(180, 120, 60, ${0.35 * factor})`;
+        this.ctx.fillRect(0, 0, w, h);
+
+        this.ctx.globalCompositeOperation = 'screen';
+        this.ctx.fillStyle = `rgba(255, 235, 190, ${0.2 * factor})`;
+        this.ctx.fillRect(0, 0, w, h);
+        this.ctx.restore();
+        this.drawGrain(w, h, 45 * factor);
+        break;
+      }
+
+      case 'film12': { // Silver Grain
+        this.drawGrain(w, h, 48 * factor);
+        break;
+      }
+
+      // -------------------------------------------------------------
+      // GLITCH, LIGHT, RETRO & BLUR CREATIVE EFFECTS
+      // -------------------------------------------------------------
+      case 'glitch': {
+        const sliceCount = 5;
+        for (let i = 0; i < sliceCount; i++) {
+          const sliceY = (h / sliceCount) * i + 15;
+          const sliceH = 35;
+          const shiftX = (Math.sin(i * 3.7) * 25 * factor);
+          this.ctx.drawImage(this.canvas, 0, sliceY, w, sliceH, shiftX, sliceY, w, sliceH);
+        }
+        this.ctx.save();
+        this.ctx.globalCompositeOperation = 'screen';
+        this.ctx.fillStyle = `rgba(255, 0, 128, ${0.18 * factor})`;
+        this.ctx.fillRect(4, 0, w, h);
+        this.ctx.fillStyle = `rgba(0, 255, 255, ${0.18 * factor})`;
+        this.ctx.fillRect(-4, 0, w, h);
+        this.ctx.restore();
+        break;
+      }
+
+      case 'crt': {
+        this.ctx.save();
+        this.ctx.fillStyle = `rgba(0, 0, 0, ${0.35 * factor})`;
+        for (let y = 0; y < h; y += 4) {
+          this.ctx.fillRect(0, y, w, 2);
+        }
+        this.ctx.globalCompositeOperation = 'screen';
+        this.ctx.fillStyle = `rgba(0, 255, 128, ${0.08 * factor})`;
+        this.ctx.fillRect(0, 0, w, h);
+        this.ctx.restore();
+        break;
+      }
+
+      case 'mosaic': {
+        const size = Math.max(6, Math.round(18 * factor));
+        const buf = document.createElement('canvas');
+        buf.width = Math.ceil(w / size);
+        buf.height = Math.ceil(h / size);
+        const bCtx = buf.getContext('2d');
+        bCtx.drawImage(this.canvas, 0, 0, buf.width, buf.height);
+        this.ctx.imageSmoothingEnabled = false;
+        this.ctx.drawImage(buf, 0, 0, w, h);
+        this.ctx.imageSmoothingEnabled = true;
+        break;
+      }
+
+      case 'datamosh': {
+        const blocks = 8;
+        const bW = w / blocks;
+        const bH = h / blocks;
+        for (let i = 0; i < 4; i++) {
+          const bx = Math.floor(Math.random() * blocks) * bW;
+          const by = Math.floor(Math.random() * blocks) * bH;
+          this.ctx.drawImage(this.canvas, bx, by, bW, bH, bx + (Math.random() - 0.5) * 30 * factor, by, bW, bH);
+        }
+        break;
+      }
+
+      case 'lightLeak': {
+        const grad = this.ctx.createRadialGradient(w * 0.85, 0, 10, w * 0.85, 0, w * 0.7);
+        grad.addColorStop(0, `rgba(255, 140, 0, ${0.55 * factor})`);
+        grad.addColorStop(0.5, `rgba(255, 0, 128, ${0.3 * factor})`);
+        grad.addColorStop(1, 'transparent');
+        this.ctx.save();
+        this.ctx.globalCompositeOperation = 'screen';
+        this.ctx.fillStyle = grad;
+        this.ctx.fillRect(0, 0, w, h);
+        this.ctx.restore();
+        break;
+      }
+
+      case 'lensGlow': {
+        this.ctx.save();
+        this.ctx.globalCompositeOperation = 'screen';
+        const lg = this.ctx.createRadialGradient(w/2, h/2, 5, w/2, h/2, w*0.45);
+        lg.addColorStop(0, `rgba(200, 150, 255, ${0.75 * factor})`);
+        lg.addColorStop(0.4, `rgba(100, 200, 255, ${0.35 * factor})`);
+        lg.addColorStop(1, 'transparent');
+        this.ctx.fillStyle = lg;
+        this.ctx.fillRect(0, 0, w, h);
+        this.ctx.restore();
+        break;
+      }
+
+      case 'rainbow': {
+        this.ctx.save();
+        this.ctx.globalCompositeOperation = 'screen';
+        const rb = this.ctx.createLinearGradient(0, 0, w, h);
+        rb.addColorStop(0, `rgba(255, 0, 0, ${0.2 * factor})`);
+        rb.addColorStop(0.2, `rgba(255, 165, 0, ${0.2 * factor})`);
+        rb.addColorStop(0.4, `rgba(255, 255, 0, ${0.2 * factor})`);
+        rb.addColorStop(0.6, `rgba(0, 255, 0, ${0.2 * factor})`);
+        rb.addColorStop(0.8, `rgba(0, 200, 255, ${0.2 * factor})`);
+        rb.addColorStop(1, `rgba(160, 0, 255, ${0.2 * factor})`);
+        this.ctx.fillStyle = rb;
+        this.ctx.fillRect(0, 0, w, h);
+        this.ctx.restore();
+        break;
+      }
+
+      case 'neonEdge': {
+        this.ctx.save();
+        this.ctx.globalCompositeOperation = 'screen';
+        this.ctx.strokeStyle = `rgba(0, 240, 255, ${0.85 * factor})`;
+        this.ctx.lineWidth = 3;
+        this.ctx.strokeRect(10, 10, w - 20, h - 20);
+        this.ctx.restore();
+        break;
+      }
+
+      case 'vhs': {
+        this.ctx.save();
+        this.ctx.fillStyle = "rgba(0, 255, 128, 0.9)";
+        this.ctx.font = "bold 24px monospace";
+        this.ctx.fillText("PLAY ▶ SP", 35, 65);
+        this.ctx.fillText("REC 00:14:28:09", 35, 105);
+        this.ctx.fillStyle = "rgba(255, 255, 255, 0.4)";
+        this.ctx.fillText("AUTO TRACKING", w - 240, 65);
+        this.ctx.restore();
+        break;
+      }
+
+      case 'vintageSepia': {
+        this.ctx.save();
+        this.ctx.globalCompositeOperation = 'color';
+        this.ctx.fillStyle = `rgba(160, 105, 55, ${0.65 * factor})`;
+        this.ctx.fillRect(0, 0, w, h);
+        this.ctx.restore();
+        this.drawGrain(w, h, 35 * factor);
+        break;
+      }
+
+      case 'noir': {
+        this.ctx.save();
+        this.ctx.globalCompositeOperation = 'saturation';
+        this.ctx.fillStyle = `rgba(0, 0, 0, ${factor})`;
+        this.ctx.fillRect(0, 0, w, h);
+        this.ctx.globalCompositeOperation = 'multiply';
+        const vig = this.ctx.createRadialGradient(w/2, h/2, w*0.2, w/2, h/2, w*0.7);
+        vig.addColorStop(0, 'rgba(255,255,255,1)');
+        vig.addColorStop(1, `rgba(30,30,30,1)`);
+        this.ctx.fillStyle = vig;
+        this.ctx.fillRect(0, 0, w, h);
+        this.ctx.restore();
+        this.drawGrain(w, h, 30 * factor);
+        break;
+      }
+
+      case 'halftone': {
+        this.ctx.save();
+        this.ctx.fillStyle = `rgba(0, 0, 0, ${0.15 * factor})`;
+        const dotGap = 8;
+        for (let x = 0; x < w; x += dotGap) {
+          for (let y = 0; y < h; y += dotGap) {
+            this.ctx.beginPath();
+            this.ctx.arc(x, y, 1.5, 0, Math.PI * 2);
+            this.ctx.fill();
+          }
+        }
+        this.ctx.restore();
+        break;
+      }
+
+      case 'motionBlur': {
+        this.ctx.save();
+        this.ctx.globalAlpha = 0.3 * factor;
+        for (let i = 1; i <= 4; i++) {
+          this.ctx.drawImage(this.canvas, i * 6 * factor, 0, w, h);
+        }
+        this.ctx.restore();
+        break;
+      }
+
+      case 'radialBlur': {
+        this.ctx.save();
+        this.ctx.globalAlpha = 0.25 * factor;
+        const scaleStep = 0.015 * factor;
+        for (let i = 1; i <= 3; i++) {
+          const s = 1 + i * scaleStep;
+          this.ctx.drawImage(this.canvas, (w - w * s) / 2, (h - h * s) / 2, w * s, h * s);
+        }
+        this.ctx.restore();
+        break;
+      }
+
+      case 'tiltShift': {
+        this.ctx.save();
+        const buf = document.createElement('canvas');
+        buf.width = w;
+        buf.height = h;
+        buf.getContext('2d').drawImage(this.canvas, 0, 0);
+
+        this.ctx.filter = `blur(${Math.round(10 * factor)}px)`;
+        this.ctx.drawImage(buf, 0, 0);
+        this.ctx.filter = 'none';
+
+        // Clear sharp center band
+        const bandY = h * 0.35;
+        const bandH = h * 0.3;
+        this.ctx.drawImage(buf, 0, bandY, w, bandH, 0, bandY, w, bandH);
+        this.ctx.restore();
+        break;
+      }
     }
   },
 
@@ -4477,6 +5714,37 @@ const PhotoStudio = {
     if (divider) {
       divider.style.left = `${this.splitPosition}%`;
     }
+
+    const baseLayer = this.project.layers.find(l => l.isBase && l.type === 'image');
+    if (!baseLayer || !baseLayer.img) return;
+
+    // Draw the clean unedited original photo clipped to [0 .. splitX]
+    this.ctx.save();
+    this.ctx.beginPath();
+    this.ctx.rect(0, 0, splitX, h);
+    this.ctx.clip();
+
+    if (this.project.backgroundColor !== 'transparent') {
+      this.ctx.fillStyle = this.project.backgroundColor;
+      this.ctx.fillRect(0, 0, splitX, h);
+    }
+    
+    // Draw original unedited base image
+    const cx = baseLayer.x + baseLayer.width / 2;
+    const cy = baseLayer.y + baseLayer.height / 2;
+    this.ctx.save();
+    this.ctx.translate(cx, cy);
+    if (baseLayer.rotation) {
+      this.ctx.rotate((baseLayer.rotation * Math.PI) / 180);
+    }
+    if (baseLayer.flipH || baseLayer.flipV) {
+      this.ctx.scale(baseLayer.flipH ? -1 : 1, baseLayer.flipV ? -1 : 1);
+    }
+    this.ctx.translate(-cx, -cy);
+    this.ctx.drawImage(baseLayer.img, baseLayer.x, baseLayer.y, baseLayer.width, baseLayer.height);
+    this.ctx.restore();
+
+    this.ctx.restore();
   },
 
   // ==============================================================
@@ -4517,19 +5785,67 @@ const PhotoStudio = {
   // ==============================================================
   applySmartAutoEnhance(val) {
     const intensity = parseInt(val, 10) / 100;
-    this.adjustments.exposure = Math.round(10 * intensity);
-    this.adjustments.contrast = Math.round(18 * intensity);
-    this.adjustments.saturation = Math.round(15 * intensity);
-    this.adjustments.vibrance = Math.round(20 * intensity);
-    this.adjustments.clarity = Math.round(25 * intensity);
-    this.adjustments.highlights = Math.round(-12 * intensity);
-    this.adjustments.shadows = Math.round(15 * intensity);
+    const baseLayer = this.project.layers.find(l => l.isBase && l.type === 'image');
     
-    document.getElementById('valAutoEnhance').innerText = `${val}% Intensity`;
+    // Auto-analysis of luminance range if image is present (Photocrate e_improve)
+    let autoExposure = 8;
+    let autoContrast = 16;
+    let autoShadows = 14;
+    let autoHighlights = -10;
+    
+    if (baseLayer && baseLayer.img) {
+      try {
+        const sc = document.createElement('canvas');
+        sc.width = 100;
+        sc.height = 100;
+        const sCtx = sc.getContext('2d');
+        sCtx.drawImage(baseLayer.img, 0, 0, 100, 100);
+        const sData = sCtx.getImageData(0, 0, 100, 100).data;
+        let sumLum = 0;
+        let minLum = 255;
+        let maxLum = 0;
+        for (let i = 0; i < sData.length; i += 4) {
+          const lum = 0.299 * sData[i] + 0.587 * sData[i+1] + 0.114 * sData[i+2];
+          sumLum += lum;
+          if (lum < minLum) minLum = lum;
+          if (lum > maxLum) maxLum = lum;
+        }
+        const avgLum = sumLum / (sData.length / 4);
+        if (avgLum < 100) {
+          autoExposure = Math.round((128 - avgLum) * 0.22);
+          autoShadows = 20;
+        } else if (avgLum > 160) {
+          autoExposure = Math.round((128 - avgLum) * 0.18);
+          autoHighlights = -18;
+        }
+        if (maxLum - minLum < 165) {
+          autoContrast = 22;
+        }
+      } catch (e) {}
+    }
+
+    this.adjustments.exposure = Math.round(autoExposure * intensity);
+    this.adjustments.contrast = Math.round(autoContrast * intensity);
+    this.adjustments.saturation = Math.round(18 * intensity);
+    this.adjustments.vibrance = Math.round(22 * intensity);
+    this.adjustments.clarity = Math.round(20 * intensity);
+    this.adjustments.sharpness = Math.round(25 * intensity);
+    this.adjustments.highlights = Math.round(autoHighlights * intensity);
+    this.adjustments.shadows = Math.round(autoShadows * intensity);
+    
+    ['exposure', 'contrast', 'saturation', 'vibrance', 'clarity', 'sharpness', 'highlights', 'shadows'].forEach(k => {
+      const el = document.getElementById(`slider${k.charAt(0).toUpperCase() + k.slice(1)}`);
+      const valEl = document.getElementById(`val${k.charAt(0).toUpperCase() + k.slice(1)}`);
+      if (el) el.value = this.adjustments[k];
+      if (valEl) valEl.innerText = `${this.adjustments[k]}`;
+    });
+
+    const valAutoEl = document.getElementById('valAutoEnhance');
+    if (valAutoEl) valAutoEl.innerText = `${val}% Intensity`;
     this.render();
   },
 
-  // Real Edge-Aware AI Background Removal & Transparency Alpha
+  // Real Edge-Aware AI Background Removal & Transparency Alpha (Photocrate e_background_removal)
   runAiBgRemoval() {
     const baseLayer = this.project.layers.find(l => l.isBase && l.type === 'image');
     if (!baseLayer || !baseLayer.img) {
@@ -4539,7 +5855,6 @@ const PhotoStudio = {
 
     App.showToast('AI Neural Edge Segmenting Subject...', 'auto_awesome');
     setTimeout(() => {
-      // Create offscreen canvas to process segmentation
       const oc = document.createElement('canvas');
       oc.width = baseLayer.width;
       oc.height = baseLayer.height;
@@ -4550,27 +5865,52 @@ const PhotoStudio = {
       const data = imgData.data;
       const w = oc.width, h = oc.height;
 
-      // Sample 4 corners to establish background color vector
-      const c1 = [data[0], data[1], data[2]];
-      const c2 = [data[(w - 1) * 4], data[(w - 1) * 4 + 1], data[(w - 1) * 4 + 2]];
-      const c3 = [data[((h - 1) * w) * 4], data[((h - 1) * w) * 4 + 1], data[((h - 1) * w) * 4 + 2]];
-      const c4 = [data[((h - 1) * w + (w - 1)) * 4], data[((h - 1) * w + (w - 1)) * 4 + 1], data[((h - 1) * w + (w - 1)) * 4 + 2]];
-      const bgR = (c1[0] + c2[0] + c3[0] + c4[0]) / 4;
-      const bgG = (c1[1] + c2[1] + c3[1] + c4[1]) / 4;
-      const bgB = (c1[2] + c2[2] + c3[2] + c4[2]) / 4;
+      // Sample border pixels across all 4 edges to establish background color model
+      let bgSumR = 0, bgSumG = 0, bgSumB = 0, borderCount = 0;
+      for (let x = 0; x < w; x += 4) {
+        let idx = x * 4;
+        bgSumR += data[idx]; bgSumG += data[idx+1]; bgSumB += data[idx+2];
+        idx = ((h - 1) * w + x) * 4;
+        bgSumR += data[idx]; bgSumG += data[idx+1]; bgSumB += data[idx+2];
+        borderCount += 2;
+      }
+      for (let y = 0; y < h; y += 4) {
+        let idx = (y * w) * 4;
+        bgSumR += data[idx]; bgSumG += data[idx+1]; bgSumB += data[idx+2];
+        idx = (y * w + (w - 1)) * 4;
+        bgSumR += data[idx]; bgSumG += data[idx+1]; bgSumB += data[idx+2];
+        borderCount += 2;
+      }
+      const bgR = bgSumR / borderCount;
+      const bgG = bgSumG / borderCount;
+      const bgB = bgSumB / borderCount;
 
-      const threshold = 55;
-      for (let i = 0; i < data.length; i += 4) {
-        const r = data[i], g = data[i + 1], b = data[i + 2];
-        const dist = Math.sqrt((r - bgR) ** 2 + (g - bgG) ** 2 + (b - bgB) ** 2);
-        if (dist < threshold) {
-          data[i + 3] = Math.max(0, Math.round((dist / threshold) * 255 - 40));
+      const threshold = 58;
+      const cx = w / 2, cy = h / 2;
+      const maxDist = Math.sqrt(cx * cx + cy * cy);
+
+      for (let y = 0; y < h; y++) {
+        for (let x = 0; x < w; x++) {
+          const idx = (y * w + x) * 4;
+          const r = data[idx], g = data[idx + 1], b = data[idx + 2];
+          const colorDist = Math.sqrt((r - bgR) ** 2 + (g - bgG) ** 2 + (b - bgB) ** 2);
+          
+          // Distance from center: edge pixels have lower threshold to remove, center has protection
+          const centerDist = Math.sqrt((x - cx) ** 2 + (y - cy) ** 2) / maxDist;
+          const dynamicThreshold = threshold * (0.8 + centerDist * 0.4);
+
+          // Skin tone protection: protect human face and body pixels
+          const isSkin = (r > 60 && g > 40 && b > 20 && r > g && r > b && (r - g) > 10 && centerDist < 0.75);
+
+          if (!isSkin && colorDist < dynamicThreshold) {
+            const alphaFactor = Math.max(0, (colorDist / dynamicThreshold) - 0.2);
+            data[idx + 3] = Math.round(data[idx + 3] * alphaFactor);
+          }
         }
       }
 
       oCtx.putImageData(imgData, 0, 0);
 
-      // Replace base layer image with cutout result
       const newImg = new Image();
       newImg.src = oc.toDataURL('image/png');
       newImg.onload = () => {
@@ -4585,7 +5925,12 @@ const PhotoStudio = {
 
   // Real Content-Aware Harmonic Inpainting for Object Eraser
   openObjectInpaintModal() {
-    App.showToast('Select Object Eraser brush and draw over unwanted items', 'healing');
+    const drawLayer = this.project.layers.find(l => l.type === 'drawing');
+    if (drawLayer && drawLayer.strokes && drawLayer.strokes.length > 0) {
+      this.runAiObjectRemoval();
+      return;
+    }
+    App.showToast('Brush over unwanted object, then tap AI Inpaint Fill!', 'healing');
     this.setDrawTool('mosaicCensor');
     this.switchToolTab('draw');
   },
@@ -4760,13 +6105,64 @@ const PhotoStudio = {
   },
 
   runAiOldPhotoRestore() {
-    App.showToast('AI Restoring Vintage Scratches & Auto-Coloring...', 'photo_library');
+    const baseLayer = this.project.layers.find(l => l.isBase && l.type === 'image');
+    if (!baseLayer || !baseLayer.img) {
+      App.showToast('Please import a photo first', 'warning');
+      return;
+    }
+
+    App.showToast('AI Generative Restore: Denoising & Scratches Reconstruction...', 'photo_library');
     setTimeout(() => {
-      this.adjustments.contrast = 25;
-      this.adjustments.sharpness = 30;
-      this.adjustments.temperature = 10;
-      this.render();
-      App.showToast('Old Photo Denoised & Restored!', 'verified');
+      const oc = document.createElement('canvas');
+      oc.width = baseLayer.width;
+      oc.height = baseLayer.height;
+      const oCtx = oc.getContext('2d');
+      oCtx.drawImage(baseLayer.img, 0, 0, oc.width, oc.height);
+
+      const imgData = oCtx.getImageData(0, 0, oc.width, oc.height);
+      const data = imgData.data;
+      const w = oc.width, h = oc.height;
+
+      // Median outlier scratch & dust filter
+      for (let y = 1; y < h - 1; y++) {
+        for (let x = 1; x < w - 1; x++) {
+          const idx = (y * w + x) * 4;
+          const r = data[idx], g = data[idx + 1], b = data[idx + 2];
+          
+          let sumR = 0, sumG = 0, sumB = 0;
+          for (let dy = -1; dy <= 1; dy++) {
+            for (let dx = -1; dx <= 1; dx++) {
+              if (dx === 0 && dy === 0) continue;
+              const nIdx = ((y + dy) * w + (x + dx)) * 4;
+              sumR += data[nIdx];
+              sumG += data[nIdx + 1];
+              sumB += data[nIdx + 2];
+            }
+          }
+          const avgR = sumR / 8, avgG = sumG / 8, avgB = sumB / 8;
+          // If pixel strongly deviates as a speckle or scratch, suppress it
+          if (Math.abs(r - avgR) > 55 && Math.abs(g - avgG) > 55 && Math.abs(b - avgB) > 55) {
+            data[idx] = avgR;
+            data[idx + 1] = avgG;
+            data[idx + 2] = avgB;
+          }
+        }
+      }
+
+      oCtx.putImageData(imgData, 0, 0);
+
+      const newImg = new Image();
+      newImg.src = oc.toDataURL();
+      newImg.onload = () => {
+        baseLayer.img = newImg;
+        this.adjustments.contrast = 20;
+        this.adjustments.clarity = 25;
+        this.adjustments.sharpness = 30;
+        this.adjustments.vibrance = 15;
+        this.saveState('AI Generative Restore');
+        this.render();
+        App.showToast('Old Photo Restored: Scratches Reconstructed & Details Revived!', 'verified');
+      };
     }, 400);
   },
 
@@ -4911,78 +6307,264 @@ const PhotoStudio = {
   // ==============================================================
   // FILTERS & 3D LUTS
   // ==============================================================
+  // ==============================================================
+  // FILTERS & 3D LUTS (FILTEROUS-2 & PHOTOCRATE COMPLETE SUITE)
+  // ==============================================================
+  filterRecipes: {
+    clarendon: { brightness: 0.1, contrast: 0.1, saturation: 0.15 },
+    gingham: { sepia: 0.04, contrast: -0.15 },
+    moon: { grayscale: 1, contrast: -0.04, brightness: 0.1 },
+    lark: { brightness: 0.08, rgbAdjust: [1, 1.03, 1.05], saturation: 0.12 },
+    reyes: { sepia: 0.4, brightness: 0.13, contrast: -0.05 },
+    juno: { rgbAdjust: [1.01, 1.04, 1], saturation: 0.3 },
+    slumber: { brightness: 0.1, saturation: -0.5 },
+    crema: { rgbAdjust: [1.04, 1, 1.02], saturation: -0.05 },
+    ludwig: { brightness: 0.05, saturation: -0.03 },
+    aden: { colorFilter: [228, 130, 225, 0.13], saturation: -0.2 },
+    perpetua: { rgbAdjust: [1.05, 1.1, 1] },
+    amaro: { saturation: 0.3, brightness: 0.15 },
+    mayfair: { colorFilter: [230, 115, 108, 0.05], saturation: 0.15 },
+    rise: { colorFilter: [255, 170, 0, 0.1], brightness: 0.09, saturation: 0.1 },
+    hudson: { rgbAdjust: [1, 1, 1.25], contrast: 0.1, brightness: 0.15 },
+    valencia: { colorFilter: [255, 225, 80, 0.08], saturation: 0.1, contrast: 0.05 },
+    xpro2: { colorFilter: [255, 255, 0, 0.07], saturation: 0.2, contrast: 0.15 },
+    sierra: { contrast: -0.15, saturation: 0.1 },
+    willow: { grayscale: 1, colorFilter: [100, 28, 210, 0.03], brightness: 0.1 },
+    lofi: { contrast: 0.15, saturation: 0.2 },
+    inkwell: { grayscale: 1 },
+    hefe: { contrast: 0.1, saturation: 0.15 },
+    nashville: { colorFilter: [220, 115, 188, 0.12], contrast: -0.05 },
+    stinson: { brightness: 0.1, sepia: 0.3 },
+    vesper: { colorFilter: [255, 225, 0, 0.05], brightness: 0.06, contrast: 0.06 },
+    earlybird: { colorFilter: [255, 165, 40, 0.2] },
+    brannan: { contrast: 0.2, colorFilter: [140, 10, 185, 0.1] },
+    sutro: { brightness: -0.1, saturation: -0.1 },
+    toaster: { sepia: 0.1, colorFilter: [255, 145, 0, 0.2] },
+    walden: { brightness: 0.1, colorFilter: [255, 255, 0, 0.2] },
+    '1977': { colorFilter: [255, 25, 0, 0.15], brightness: 0.1 },
+    kelvin: { colorFilter: [255, 140, 0, 0.1], rgbAdjust: [1.15, 1.05, 1], saturation: 0.35 },
+    maven: { colorFilter: [225, 240, 0, 0.1], saturation: 0.25, contrast: 0.05 },
+    ginza: { sepia: 0.06, brightness: 0.1 },
+    skyline: { saturation: 0.35, brightness: 0.1 },
+    dogpatch: { contrast: 0.15, brightness: 0.1 },
+    brooklyn: { colorFilter: [25, 240, 252, 0.05], sepia: 0.3 },
+    helena: { colorFilter: [208, 208, 86, 0.2], contrast: 0.15 },
+    ashby: { colorFilter: [255, 160, 25, 0.1], brightness: 0.1 },
+    charmes: { colorFilter: [255, 50, 80, 0.12], contrast: 0.05 },
+    eucalyptus: { colorFilter: [160, 205, 175, 0.16], contrast: 0.08, saturation: -0.1, brightness: 0.04 },
+    frost: { colorFilter: [180, 230, 255, 0.16], contrast: 0.18, brightness: 0.08, rgbAdjust: [0.95, 1.05, 1.2] },
+    colorPop: { colorPop: true },
+    goldenHour: { exposure: 10, contrast: 0.15, saturation: 0.2, temperature: 25, colorFilter: [255, 180, 50, 0.08] },
+    cyberNeon: { contrast: 0.25, saturation: 0.35, temperature: -20, rgbAdjust: [0.85, 1.1, 1.3] },
+    vintageFilm: { sepia: 0.15, contrast: -0.1, saturation: -0.15, temperature: 20 },
+    emeraldMoody: { contrast: 0.22, rgbAdjust: [0.85, 1.15, 0.95], saturation: 0.1 },
+    noirBW: { grayscale: 1, contrast: 0.35 },
+    tokyoDrift: { contrast: 0.25, saturation: 0.3, colorFilter: [255, 0, 128, 0.08] },
+    kodakChrome: { contrast: 0.2, saturation: 0.25, colorFilter: [255, 200, 50, 0.08] },
+    portraitGlow: { brightness: 0.1, contrast: 0.08, colorFilter: [255, 180, 190, 0.08], saturation: 0.1 }
+  },
+
+  getFilterPresets() {
+    return [
+      { id: 'none', name: 'Original', cat: ['all', 'cinematic', 'portrait', 'vintage', 'bw', 'warm', 'cool', 'insta', 'artistic'], color: '#64748b', icon: 'block' },
+      
+      // Instagram Filters (Filterous-2)
+      { id: 'clarendon', name: 'Clarendon', cat: ['insta', 'cool', 'cinematic'], color: '#38bdf8' },
+      { id: 'gingham', name: 'Gingham', cat: ['insta', 'vintage'], color: '#e2e8f0' },
+      { id: 'moon', name: 'Moon', cat: ['insta', 'bw'], color: '#94a3b8' },
+      { id: 'lark', name: 'Lark', cat: ['insta', 'cool'], color: '#67e8f9' },
+      { id: 'reyes', name: 'Reyes', cat: ['insta', 'vintage', 'warm'], color: '#fed7aa' },
+      { id: 'juno', name: 'Juno', cat: ['insta', 'warm'], color: '#f59e0b' },
+      { id: 'slumber', name: 'Slumber', cat: ['insta', 'vintage'], color: '#a78bfa' },
+      { id: 'crema', name: 'Crema', cat: ['insta', 'portrait', 'warm'], color: '#fef08a' },
+      { id: 'ludwig', name: 'Ludwig', cat: ['insta', 'portrait'], color: '#fde047' },
+      { id: 'aden', name: 'Aden', cat: ['insta', 'portrait'], color: '#f472b6' },
+      { id: 'perpetua', name: 'Perpetua', cat: ['insta', 'portrait'], color: '#a3e635' },
+      { id: 'amaro', name: 'Amaro', cat: ['insta', 'warm'], color: '#facc15' },
+      { id: 'mayfair', name: 'Mayfair', cat: ['insta', 'portrait', 'warm'], color: '#fb7185' },
+      { id: 'rise', name: 'Rise', cat: ['insta', 'warm'], color: '#fb923c' },
+      { id: 'hudson', name: 'Hudson', cat: ['insta', 'cool'], color: '#0284c7' },
+      { id: 'valencia', name: 'Valencia', cat: ['insta', 'warm', 'vintage'], color: '#fde68a' },
+      { id: 'xpro2', name: 'X-Pro II', cat: ['insta', 'cinematic', 'warm'], color: '#eab308' },
+      { id: 'sierra', name: 'Sierra', cat: ['insta', 'vintage'], color: '#cbd5e1' },
+      { id: 'willow', name: 'Willow', cat: ['insta', 'bw'], color: '#818cf8' },
+      { id: 'lofi', name: 'Lo-Fi', cat: ['insta', 'cinematic'], color: '#f97316' },
+      { id: 'inkwell', name: 'Inkwell', cat: ['insta', 'bw'], color: '#52525b' },
+      { id: 'hefe', name: 'Hefe', cat: ['insta', 'warm'], color: '#ea580c' },
+      { id: 'nashville', name: 'Nashville', cat: ['insta', 'vintage'], color: '#e879f9' },
+      { id: 'stinson', name: 'Stinson', cat: ['insta', 'vintage', 'warm'], color: '#fdba74' },
+      { id: 'vesper', name: 'Vesper', cat: ['insta', 'warm'], color: '#fef08a' },
+      { id: 'earlybird', name: 'Earlybird', cat: ['insta', 'vintage', 'warm'], color: '#d97706' },
+      { id: 'brannan', name: 'Brannan', cat: ['insta', 'cinematic'], color: '#c084fc' },
+      { id: 'sutro', name: 'Sutro', cat: ['insta', 'cinematic'], color: '#78350f' },
+      { id: 'toaster', name: 'Toaster', cat: ['insta', 'vintage', 'warm'], color: '#c2410c' },
+      { id: 'walden', name: 'Walden', cat: ['insta', 'warm'], color: '#facc15' },
+      { id: '1977', name: '1977', cat: ['insta', 'vintage'], color: '#f87171' },
+      { id: 'kelvin', name: 'Kelvin', cat: ['insta', 'warm'], color: '#f97316' },
+      { id: 'maven', name: 'Maven', cat: ['insta', 'warm'], color: '#ca8a04' },
+      { id: 'ginza', name: 'Ginza', cat: ['insta', 'portrait', 'warm'], color: '#ffedd5' },
+      { id: 'skyline', name: 'Skyline', cat: ['insta', 'cinematic', 'cool'], color: '#38bdf8' },
+      { id: 'dogpatch', name: 'Dogpatch', cat: ['insta', 'cinematic'], color: '#fb923c' },
+      { id: 'brooklyn', name: 'Brooklyn', cat: ['insta', 'cool', 'vintage'], color: '#06b6d4' },
+      { id: 'helena', name: 'Helena', cat: ['insta', 'vintage'], color: '#a3e635' },
+      { id: 'ashby', name: 'Ashby', cat: ['insta', 'warm', 'vintage'], color: '#fb923c' },
+      { id: 'charmes', name: 'Charmes', cat: ['insta', 'portrait'], color: '#f43f5e' },
+
+      // Cloudinary Photocrate Signature & Artistic Filters
+      { id: 'colorPop', name: 'Color Pop', cat: ['artistic', 'portrait', 'cinematic'], color: '#ec4899', icon: 'auto_fix_high' },
+      { id: 'eucalyptus', name: 'Eucalyptus', cat: ['artistic', 'portrait'], color: '#34d399' },
+      { id: 'frost', name: 'Frost Arctic', cat: ['artistic', 'cool'], color: '#bae6fd' },
+
+      // Classic Kroma Studio Cinematic LUTs
+      { id: 'goldenHour', name: 'Golden Hour', cat: ['warm', 'portrait'], color: '#f59e0b' },
+      { id: 'cyberNeon', name: 'Cyber Neon', cat: ['cool', 'cinematic'], color: '#00f0ff' },
+      { id: 'vintageFilm', name: 'Vintage 35mm', cat: ['vintage'], color: '#fb923c' },
+      { id: 'emeraldMoody', name: 'Emerald Moody', cat: ['cinematic', 'cool'], color: '#10b981' },
+      { id: 'noirBW', name: 'Noir Contrast', cat: ['bw', 'cinematic'], color: '#71717a' },
+      { id: 'tokyoDrift', name: 'Tokyo Drift', cat: ['cinematic', 'cool'], color: '#ec4899' },
+      { id: 'kodakChrome', name: 'Kodak Chrome', cat: ['vintage', 'warm'], color: '#eab308' },
+      { id: 'portraitGlow', name: 'Skin Soften', cat: ['portrait', 'warm'], color: '#f472b6' }
+    ];
+  },
+
   renderFiltersUI() {
     const list = document.getElementById('filtersThumbnailsList');
     if (!list) return;
 
-    const filterPresets = [
-      { id: 'goldenHour', name: 'Golden Hour', cat: 'warm', color: '#f59e0b' },
-      { id: 'cyberNeon', name: 'Cyber Neon', cat: 'cool', color: '#00f0ff' },
-      { id: 'vintageFilm', name: 'Vintage 35mm', cat: 'vintage', color: '#fb923c' },
-      { id: 'emeraldMoody', name: 'Emerald Moody', cat: 'cinematic', color: '#10b981' },
-      { id: 'noirBW', name: 'Noir Contrast', cat: 'bw', color: '#71717a' },
-      { id: 'tokyoDrift', name: 'Tokyo Drift', cat: 'cinematic', color: '#ec4899' },
-      { id: 'kodakChrome', name: 'Kodak Chrome', cat: 'vintage', color: '#eab308' },
-      { id: 'portraitGlow', name: 'Skin Soften', cat: 'portrait', color: '#f472b6' }
-    ];
+    const allPresets = this.getFilterPresets();
+    const currentCat = this.selectedFilterCategory || 'all';
 
-    list.innerHTML = filterPresets.map(f => `
-      <button onclick="PhotoStudio.applyFilter('${f.id}')" class="flex-shrink-0 w-20 p-1.5 rounded-2xl bg-[#121826] hover:bg-[#1a2336] border border-white/10 flex flex-col items-center gap-1 active:scale-95 transition-all group">
+    const filtered = (currentCat === 'all')
+      ? allPresets
+      : allPresets.filter(f => f.id === 'none' || (Array.isArray(f.cat) ? f.cat.includes(currentCat) : f.cat === currentCat));
+
+    const active = this.activeFilter || 'none';
+
+    list.innerHTML = filtered.map(f => {
+      const isSelected = (active === f.id);
+      const selectedClass = isSelected
+        ? 'border-cyan-400 ring-2 ring-cyan-400/50 bg-[#16233b] shadow-[0_0_12px_rgba(0,240,255,0.35)]'
+        : 'border-white/10 bg-[#121826] hover:bg-[#1a2336]';
+      return `
+      <button onclick="PhotoStudio.applyFilter('${f.id}')" class="flex-shrink-0 w-20 p-1.5 rounded-2xl ${selectedClass} border flex flex-col items-center gap-1 active:scale-95 transition-all group">
         <div class="w-full aspect-square rounded-xl bg-[#1c2438] flex items-center justify-center relative overflow-hidden border border-white/5">
-          <div class="w-8 h-8 rounded-full" style="background: ${f.color}; opacity: 0.6; filter: blur(6px);"></div>
-          <span class="material-symbols-outlined text-[18px] text-white z-10">palette</span>
+          <div class="w-8 h-8 rounded-full" style="background: ${f.color}; opacity: 0.65; filter: blur(6px);"></div>
+          <span class="material-symbols-outlined text-[18px] text-white z-10">${f.icon || 'palette'}</span>
         </div>
-        <span class="text-[10px] font-bold text-slate-300 group-hover:text-cyan-400 truncate w-full text-center">${f.name}</span>
+        <span class="text-[10px] font-bold ${isSelected ? 'text-cyan-400' : 'text-slate-300 group-hover:text-cyan-400'} truncate w-full text-center">${f.name}</span>
       </button>
-    `).join('');
+      `;
+    }).join('');
   },
 
   applyFilter(filterId) {
-    this.activeFilter = filterId;
-    const filterConfigs = {
-      goldenHour: { exposure: 10, contrast: 15, saturation: 20, temperature: 25 },
-      cyberNeon: { exposure: 0, contrast: 30, saturation: 40, temperature: -20 },
-      vintageFilm: { exposure: 5, contrast: -10, saturation: -15, temperature: 30 },
-      emeraldMoody: { exposure: -10, contrast: 25, saturation: 10, temperature: -10 },
-      noirBW: { exposure: 0, contrast: 45, saturation: -100, temperature: 0 },
-      tokyoDrift: { exposure: 5, contrast: 35, saturation: 30, temperature: -15 },
-      kodakChrome: { exposure: 15, contrast: 20, saturation: 25, temperature: 15 },
-      portraitGlow: { exposure: 12, contrast: 10, saturation: 10, temperature: 5 }
-    };
-    const cfg = filterConfigs[filterId];
-    if (cfg) {
-      this.adjustments.exposure = cfg.exposure;
-      this.adjustments.contrast = cfg.contrast;
-      this.adjustments.saturation = cfg.saturation;
-      this.adjustments.temperature = cfg.temperature;
-      this.render();
-      App.showToast(`Applied Filter: ${filterId}`, 'palette');
+    if (!filterId || filterId === 'none') {
+      this.activeFilter = null;
+      App.showToast('Filter removed (Original image)', 'restart_alt');
+    } else {
+      this.activeFilter = filterId;
+      App.showToast(`Applied Filter: ${filterId.toUpperCase()}`, 'palette');
     }
+    this.renderFiltersUI();
+    this.render();
   },
 
   setFilterIntensity(val) {
     this.filterIntensity = parseInt(val, 10);
-    document.getElementById('valFilterIntensity').innerText = `${val}%`;
+    const badge = document.getElementById('valFilterIntensity');
+    if (badge) badge.innerText = `${val}%`;
     this.render();
   },
 
   filterCategory(cat) {
-    App.showToast(`Filtering category: ${cat.toUpperCase()}`);
+    this.selectedFilterCategory = cat;
+    const tabs = document.querySelectorAll('#filterCategoryTabs button');
+    tabs.forEach(btn => {
+      const onclickAttr = btn.getAttribute('onclick') || '';
+      if (onclickAttr.includes(`'${cat}'`)) {
+        btn.className = "px-2.5 py-1 rounded-full bg-cyan-400 text-black text-[11px] font-bold flex-shrink-0 shadow-sm";
+      } else {
+        btn.className = "px-2.5 py-1 rounded-full bg-[#141b2c] hover:bg-white/10 text-slate-300 text-[11px] font-bold flex-shrink-0";
+      }
+    });
+    this.renderFiltersUI();
+    App.showToast(`Category: ${cat.toUpperCase()}`, 'palette');
   },
 
   // ==============================================================
-  // EFFECTS (GLITCH, LIGHT LEAK, MOTION BLUR)
+  // INSHOT FILM EFFECTS & CREATIVE VFX CONTROLS
   // ==============================================================
+  filterEffectCategory(cat) {
+    this.effectCategory = cat;
+    const tabs = document.querySelectorAll('#effectCategoryTabs button');
+    tabs.forEach(btn => {
+      const bCat = btn.getAttribute('data-cat');
+      if (bCat === cat) {
+        btn.className = "px-3 py-1 rounded-full bg-cyan-400 text-black text-[11px] font-bold flex-shrink-0 shadow-sm flex items-center gap-1";
+      } else {
+        btn.className = "px-3 py-1 rounded-full bg-[#141b2c] hover:bg-white/10 text-slate-300 text-[11px] font-bold flex-shrink-0 flex items-center gap-1";
+      }
+    });
+
+    const cards = document.querySelectorAll('.vfx-effect-card');
+    cards.forEach(card => {
+      const cardCat = card.getAttribute('data-category');
+      if (cat === 'all' || cardCat === cat) {
+        card.classList.remove('hidden');
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+  },
+
   applyEffect(effectName) {
-    this.activeEffect = effectName;
+    if (this.activeEffect === effectName) {
+      this.activeEffect = null;
+      App.showToast('VFX Effect toggled OFF', 'check');
+    } else {
+      this.activeEffect = effectName;
+      App.showToast(`Applied: ${effectName.toUpperCase()}`, 'movie');
+    }
     this.render();
-    App.showToast(`Applied VFX Effect: ${effectName.toUpperCase()}`, 'blur_on');
+    this.updateEffectUI();
   },
 
   clearEffects() {
     this.activeEffect = null;
     this.render();
+    this.updateEffectUI();
     App.showToast('VFX cleared', 'check');
+  },
+
+  setEffectIntensity(val) {
+    this.effectIntensity = parseInt(val, 10);
+    const lbl = document.getElementById('labelEffectIntensity');
+    if (lbl) lbl.innerText = `${val}%`;
+    this.render();
+  },
+
+  updateEffectUI() {
+    const cards = document.querySelectorAll('.vfx-effect-card');
+    cards.forEach(card => {
+      const eName = card.getAttribute('data-effect');
+      if (this.activeEffect && eName === this.activeEffect) {
+        card.classList.add('border-cyan-400', 'bg-cyan-950/40', 'ring-1', 'ring-cyan-400/50');
+        card.classList.remove('border-white/10', 'bg-[#121927]');
+      } else {
+        card.classList.remove('border-cyan-400', 'bg-cyan-950/40', 'ring-1', 'ring-cyan-400/50');
+        card.classList.add('border-white/10', 'bg-[#121927]');
+      }
+    });
+
+    const badge = document.getElementById('activeEffectBadge');
+    if (badge) {
+      if (this.activeEffect) {
+        badge.innerText = `ACTIVE: ${this.activeEffect.toUpperCase()}`;
+        badge.classList.remove('hidden');
+      } else {
+        badge.classList.add('hidden');
+      }
+    }
   },
 
   // ==============================================================
@@ -5372,6 +6954,7 @@ const PhotoStudio = {
     if (!canvas) return;
 
     let isDragging = false;
+    let isDraggingSplit = false;
     let dragStartX = 0;
     let dragStartY = 0;
     let initialPinchDistance = null;
@@ -5388,6 +6971,15 @@ const PhotoStudio = {
     };
 
     const handlePointerDown = (clientX, clientY) => {
+      // Handle Split Compare Interactive Dragging
+      if (this.splitCompare) {
+        const rect = canvas.getBoundingClientRect();
+        this.splitPosition = Math.max(0, Math.min(100, Math.round(((clientX - rect.left) / rect.width) * 100)));
+        isDraggingSplit = true;
+        this.render();
+        return;
+      }
+
       const { x: mouseX, y: mouseY } = getCanvasCoords(clientX, clientY);
 
       // Handle Drawing Mode
@@ -5431,6 +7023,14 @@ const PhotoStudio = {
     };
 
     const handlePointerMove = (clientX, clientY) => {
+      // Handle Split Compare Dragging
+      if (isDraggingSplit && this.splitCompare) {
+        const rect = canvas.getBoundingClientRect();
+        this.splitPosition = Math.max(0, Math.min(100, Math.round(((clientX - rect.left) / rect.width) * 100)));
+        this.render();
+        return;
+      }
+
       const { x: mouseX, y: mouseY } = getCanvasCoords(clientX, clientY);
 
       // Handle Drawing
@@ -5481,6 +7081,7 @@ const PhotoStudio = {
     };
 
     const handlePointerUp = () => {
+      isDraggingSplit = false;
       if (isDragging) {
         isDragging = false;
         document.getElementById('guideCenterX')?.classList.add('hidden');
@@ -5852,6 +7453,7 @@ const PhotoStudio = {
   },
 
   openCollageDialog() {
+    this.isCollageMode = true;
     App.showToast('Collage Maker: Choose 2 to 6 photos from device', 'dashboard_customize');
     document.getElementById('inputStudioFileUpload')?.click();
   },
@@ -5861,8 +7463,17 @@ const PhotoStudio = {
   },
 
   handleImageImport(event) {
-    const file = event.target.files?.[0];
-    if (!file) return;
+    const files = Array.from(event.target.files || []);
+    if (files.length === 0) return;
+
+    // Multi-photo collage creation (Photocrate creations)
+    if (files.length > 1 || this.isCollageMode) {
+      this.isCollageMode = false;
+      this.createMultiPhotoCollage(files);
+      return;
+    }
+
+    const file = files[0];
     const url = URL.createObjectURL(file);
 
     // If canvas is currently empty, load as the base master photo
@@ -5901,6 +7512,145 @@ const PhotoStudio = {
       this.renderLayersUI();
       App.showToast(`Imported ${file.name} to Canvas!`, 'image');
     };
+  },
+
+  createMultiPhotoCollage(files) {
+    App.showToast(`Generating Collage from ${files.length} photos...`, 'dashboard_customize');
+    const loadedImgs = [];
+    let loadedCount = 0;
+
+    files.forEach((f, idx) => {
+      const img = new Image();
+      img.src = URL.createObjectURL(f);
+      img.onload = () => {
+        loadedImgs[idx] = { img, name: f.name };
+        loadedCount++;
+        if (loadedCount === files.length) {
+          this.buildCollageCanvas(loadedImgs);
+        }
+      };
+    });
+  },
+
+  buildCollageCanvas(items) {
+    const count = items.length;
+    this.project.width = 1080;
+    this.project.height = 1080;
+    this.project.ratio = '1:1';
+    this.project.backgroundColor = '#ffffff';
+
+    const gap = 14;
+    const margin = 20;
+    const availableW = 1080 - margin * 2;
+    const availableH = 1080 - margin * 2;
+
+    const newLayers = [];
+
+    if (count === 2) {
+      const colW = (availableW - gap) / 2;
+      items.forEach((item, i) => {
+        newLayers.push({
+          id: 'collage_layer_' + i + '_' + Date.now(),
+          type: 'image',
+          isBase: (i === 0),
+          name: 'Collage Tile ' + (i + 1),
+          img: item.img,
+          x: margin + i * (colW + gap),
+          y: margin,
+          width: colW,
+          height: availableH,
+          opacity: 100,
+          blendMode: 'source-over',
+          visible: true,
+          locked: false
+        });
+      });
+    } else if (count === 3) {
+      const leftW = (availableW - gap) * 0.58;
+      const rightW = availableW - gap - leftW;
+      const rightH = (availableH - gap) / 2;
+
+      newLayers.push({
+        id: 'collage_layer_0_' + Date.now(),
+        type: 'image',
+        isBase: true,
+        name: 'Collage Hero',
+        img: items[0].img,
+        x: margin,
+        y: margin,
+        width: leftW,
+        height: availableH,
+        opacity: 100,
+        blendMode: 'source-over',
+        visible: true,
+        locked: false
+      });
+
+      newLayers.push({
+        id: 'collage_layer_1_' + Date.now(),
+        type: 'image',
+        name: 'Collage Tile 2',
+        img: items[1].img,
+        x: margin + leftW + gap,
+        y: margin,
+        width: rightW,
+        height: rightH,
+        opacity: 100,
+        blendMode: 'source-over',
+        visible: true,
+        locked: false
+      });
+
+      newLayers.push({
+        id: 'collage_layer_2_' + Date.now(),
+        type: 'image',
+        name: 'Collage Tile 3',
+        img: items[2].img,
+        x: margin + leftW + gap,
+        y: margin + rightH + gap,
+        width: rightW,
+        height: rightH,
+        opacity: 100,
+        blendMode: 'source-over',
+        visible: true,
+        locked: false
+      });
+    } else {
+      const cols = count <= 4 ? 2 : 3;
+      const rows = Math.ceil(count / cols);
+      const tileW = (availableW - (cols - 1) * gap) / cols;
+      const tileH = (availableH - (rows - 1) * gap) / rows;
+
+      items.forEach((item, i) => {
+        const c = i % cols;
+        const r = Math.floor(i / cols);
+        newLayers.push({
+          id: 'collage_layer_' + i + '_' + Date.now(),
+          type: 'image',
+          isBase: (i === 0),
+          name: 'Collage Tile ' + (i + 1),
+          img: item.img,
+          x: margin + c * (tileW + gap),
+          y: margin + r * (tileH + gap),
+          width: tileW,
+          height: tileH,
+          opacity: 100,
+          blendMode: 'source-over',
+          visible: true,
+          locked: false
+        });
+      });
+    }
+
+    this.project.layers = newLayers;
+    this.project.activeLayerId = newLayers[0]?.id;
+    this.closeCreationModal();
+    document.getElementById('photoCanvasDimsBadge').innerText = '1080×1080';
+    document.getElementById('photoCanvasRatioBadge').innerText = '1:1 Collage';
+    this.saveState('Create Collage');
+    this.render();
+    this.renderLayersUI();
+    App.showToast(`Created ${count}-Photo Collage Layout!`, 'dashboard_customize');
   },
 
   // Live Camera
